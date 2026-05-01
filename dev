@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export PATH="$ROOT/.local/node-current/bin:$PATH"
+export HOME="$ROOT/.home"
+export npm_config_cache="$ROOT/.npm-cache"
+
+exec "$ROOT/.local/node-current/bin/npm" run dev -- "$@"
