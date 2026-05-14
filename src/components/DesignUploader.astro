@@ -2,14 +2,14 @@
 const flyerAssets = [
 	{
 		src: '/imx/flyer-a.png',
-		title: 'Cara A',
+		title: 'Flyer Venditalia 2026',
 		description: 'Flyer vertical completo para Venditalia 2026.',
 		width: 1181,
 		height: 2480
 	},
 	{
 		src: '/imx/flyer-b.png',
-		title: 'Cara B',
+		title: 'Flyer Venditalia 2026',
 		description: 'Segunda version del flyer vertical para Venditalia 2026.',
 		width: 1181,
 		height: 2480
@@ -55,12 +55,15 @@ const videoAssets = [
 	<div class="media-heading">
 		<h3>Mis diseños</h3>
 		<p>
-			Aqui se recogen flyers para Venditalia 2026, banners publicitarios para Jake y Eneryeti, y
-			piezas de video pensadas para destacar producto de forma natural y visual.
+			Una muestra de algunos banners web mas el flyer de Distribución Mayorista para Venditalia 2026
+			 para Venditalia 2026,
 		</p>
 	</div>
 
 	<section class="asset-group">
+		<div class="video-copy">
+			<h4>Banners animados</h4>
+		</div>
 		<div class="video-grid">
 			{videoAssets.map((asset) => (
 				<article class="asset-card video-card">
@@ -84,12 +87,16 @@ const videoAssets = [
 	</section>
 
 	<section class="asset-group">
+		<div class="video-copy">
+			<h4>Banners solidos</h4>
+			<p>Los espacios en blanco están indicar TCA, información y acceso directos a puntos de interés.</p>
+		</div>
+	</section>
+
+	<section class="asset-group">
 		<div class="category-stack">
 			{categoryAssets.map((asset) => (
 				<figure class="asset-card category-card">
-					<figcaption>
-						<h4>{asset.title}</h4>
-					</figcaption>
 					<a href={asset.src} target="_blank" rel="noreferrer">
 						<img
 							src={asset.src}
@@ -106,12 +113,12 @@ const videoAssets = [
 	</section>
 
 	<section class="asset-group">
+		<div class="video-copy">
+			<h4>Flyer Venditalia 2026</h4>
+		</div>
 		<div class="flyer-grid">
 			{flyerAssets.map((asset) => (
 				<figure class="asset-card flyer-card">
-					<figcaption>
-						<h4>{asset.title}</h4>
-					</figcaption>
 					<a href={asset.src} target="_blank" rel="noreferrer">
 						<img
 							src={asset.src}

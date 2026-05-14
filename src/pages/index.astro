@@ -12,21 +12,21 @@ const capabilityGroups = [
 		items: ['SEO', 'SEM', 'Google Ads', 'Google Analytics']
 	},
 	{
-		title: 'Diseno y audiovisual',
+		title: 'Diseño y audiovisual',
 		items: ['Adobe Photoshop, After Effects y Premiere', 'Canva', 'Probance']
 	}
 ];
 ---
 
 <Layout
-	title="Portfolio | Marketing, diseno y desarrollo web"
-	description="Landing personal para mostrar conocimientos en marketing, diseno y desarrollo web desde una propuesta clara y visualmente solida."
+	title="Portfolio | Marketing, diseño y desarrollo web"
+	description="Landing personal para mostrar conocimientos en marketing, diseño y desarrollo web desde una propuesta clara y visualmente solida."
 >
-	<div class="page-shell">
+	<div class="page-shell" id="top">
 		<header class="topbar">
-			<p class="brand"><img src="/favicon.svg" alt="Logo" /> Ángel Collazo Díaz</p>
+			<a class="brand" href="#top" aria-label="Ir al inicio"><img src="/favicon.svg" alt="Logo" /> Ángel Collazo Díaz</a>
 			<nav aria-label="Secciones principales">
-				<a href="#disenos">Disenos</a>
+				<a href="#disenos">Diseños</a>
 				<a href="#contacto">Contacto</a>
 				<a href="https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/" target="_blank" rel="noreferrer">LinkedIn</a>
 			</nav>
@@ -34,8 +34,8 @@ const capabilityGroups = [
 
 		<main>
 			<section class="hero section">
-				<p class="eyebrow">Diseno, desarrollo y marketing digital</p>
-				<h2>Diseno y desarrollo web para marcas que quieren posicionarse y vender mejor.</h2>
+				<p class="eyebrow">Diseño, desarrollo y marketing digital</p>
+				<h2>Diseño y desarrollo web para marcas que quieren posicionarse y vender mejor.</h2>
 				<p class="hero-copy">
 					Ofrezco mi experiencia para una estrategia clara, identidad visual definida y desarrollo full stack para hacerlo todo posible.
 				</p>
@@ -44,7 +44,7 @@ const capabilityGroups = [
 			<section class="section capabilities-band">
 				<div class="capabilities-intro">
 					<p class="section-kicker">Aptitudes</p>
-					<h3>Me centro en unir desarrollo, marketing y diseno dentro de una misma web.</h3>
+					<h3>Me especialidad es unir desarrollo, marketing y diseño dentro de una misma web.</h3>
 					<p>
 						Hago que cada parte del proyecto funcione en conjunto: estructura, tecnologia,
 						comunicacion visual y herramientas de captacion.
@@ -142,6 +142,14 @@ const capabilityGroups = [
 		font-weight: 800;
 		letter-spacing: 0.28em;
 		text-transform: uppercase;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.brand:hover,
+	.brand:focus,
+	.brand:visited {
+		color: inherit;
 	}
 
 	.brand img {
