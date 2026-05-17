@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Proyecto destacado | Portfolio"
+	description="Vista de proyecto creada para mostrar diseño, estructura y experiencia interactiva."
+>
+	<div class="page-shell demo-shell">
+		<header class="demo-topbar">
+			<a class="brand" href="/">Ángel Collazo Díaz</a>
+			<nav aria-label="Navegación de muestra">
+				<a href="#hero">Inicio</a>
+				<a href="#features">Características</a>
+				<a href="#works">Proyecto</a>
+			</nav>
+		</header>
+
+		<main>
+			<section id="hero" class="demo-hero">
+				<p class="eyebrow">Proyecto destacado</p>
+				<h1>Una vista preparada para presentar un proyecto web profesional.</h1>
+				<p>
+					Diseño, estructura y contenido pensados para que el visitante explore el proyecto:
+					secciones claras, recorrido natural y un estilo visual contemporáneo.
+				</p>
+				<a class="button-primary" href="#works">Explorar proyecto</a>
+			</section>
+
+			<section id="features" class="demo-section demo-features">
+				<h2>Qué muestra este proyecto</h2>
+				<div class="feature-grid">
+					<article>
+						<h3>Landing de presentación</h3>
+						<p>Mensajes claros, objetivos definidos y estructura visual para entender el proyecto rápido.</p>
+					</article>
+					<article>
+						<h3>Responsive y moderno</h3>
+						<p>Adaptable a móvil, tablet y escritorio con formas suaves y tipografía legible.</p>
+					</article>
+					<article>
+						<h3>Interacciones sencillas</h3>
+						<p>Botones, navegación y contenido ordenado para explorar el proyecto con fluidez.</p>
+					</article>
+				</div>
+			</section>
+
+			<section id="works" class="demo-section demo-showcase">
+				<h2>Propuesta de proyecto</h2>
+				<p>
+					Esta página funciona como espacio de vista previa. Más adelante puede sustituirse por el
+					proyecto real, con su contenido definitivo, imágenes, secciones y navegación propia.
+				</p>
+				<div class="work-list">
+					<article>
+						<strong>Landing para evento</strong>
+						<p>Presentación de producto o campaña con secciones claras y lectura directa.</p>
+					</article>
+					<article>
+						<strong>E-commerce ligero</strong>
+						<p>Catálogo de secciones, llamadas a la acción y experiencia de usuario pulida.</p>
+					</article>
+					<article>
+						<strong>Portfolio profesional</strong>
+						<p>Espacio para mostrar trabajos, casos y valores del servicio con respuesta adaptativa.</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="demo-section demo-contact">
+				<h2>Espacio reservado para el proyecto final</h2>
+				<p>
+					Cuando el proyecto esté definido, este punto puede llevar al recorrido completo, a una
+					página interna o a una experiencia más visual.
+			</p>
+				<a class="button-secondary" href="/">Volver al portfolio</a>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.demo-shell {
+		width: min(1140px, calc(100% - 32px));
+		margin: 0 auto;
+		padding: 30px 0 60px;
+	}
+
+	.demo-topbar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 18px 22px;
+		margin-bottom: 40px;
+		background: rgba(255, 255, 255, 0.84);
+		backdrop-filter: blur(20px);
+		border: 1px solid rgba(133, 112, 76, 0.16);
+		border-radius: 28px;
+	}
+
+	.demo-topbar nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 18px;
+	}
+
+	.demo-topbar a {
+		font-weight: 700;
+		text-decoration: none;
+		color: var(--text);
+	}
+
+	.demo-hero,
+	.demo-section {
+		padding: 40px 34px;
+		margin-bottom: 28px;
+		border-radius: 32px;
+		background: rgba(255, 255, 255, 0.78);
+		box-shadow: var(--shadow);
+	}
+
+	.demo-hero h1 {
+		font-size: clamp(2.4rem, 4vw, 3.8rem);
+		margin: 18px 0 0.8em;
+	}
+
+	.demo-hero p {
+		max-width: 62ch;
+		margin: 0;
+	}
+
+	.hero-actions,
+	.demo-showcase,
+	.demo-contact {
+		display: grid;
+		gap: 18px;
+	}
+
+	.feature-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 20px;
+		margin-top: 28px;
+	}
+
+	.feature-grid article,
+	.work-list article {
+		padding: 22px;
+		border-radius: 24px;
+		background: rgba(246, 239, 230, 0.9);
+		border: 1px solid rgba(162, 135, 87, 0.14);
+	}
+
+	.work-list {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 20px;
+		margin-top: 24px;
+	}
+
+	.work-list strong {
+		display: block;
+		font-size: 1rem;
+		margin-bottom: 10px;
+		color: var(--accent-deep);
+	}
+
+	.demo-contact {
+		text-align: center;
+	}
+
+	.demo-contact h2 {
+		margin-bottom: 12px;
+	}
+
+	.button-primary,
+	.button-secondary {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 14px 24px;
+		border-radius: 999px;
+		font-weight: 700;
+		text-decoration: none;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+	}
+
+	.button-primary {
+		background: linear-gradient(90deg, #6a3cfd 0%, #2d9cdb 100%);
+		color: white;
+	}
+
+	.button-secondary {
+		background: #f5efe5;
+		color: var(--text);
+		border: 1px solid rgba(133, 112, 76, 0.18);
+	}
+
+	.button-primary:hover,
+	.button-secondary:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 14px 30px rgba(28, 21, 12, 0.08);
+	}
+
+	@media (max-width: 880px) {
+		.feature-grid,
+		.work-list {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.demo-shell {
+			padding: 22px 0 60px;
+		}
+
+		.demo-topbar {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>

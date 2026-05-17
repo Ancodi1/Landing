@@ -16,6 +16,46 @@ const capabilityGroups = [
 		items: ['Adobe Photoshop, After Effects y Premiere', 'Canva', 'Probance']
 	}
 ];
+
+const featuredProjects = [
+	{
+		title: 'Landing para Venditalia',
+		type: 'Evento B2B',
+		status: 'Publicado',
+		summary:
+			'Landing comercial con diseño visual coherente y una navegación clara para presentar el proyecto.',
+		tools: ['Astro', 'HTML', 'CSS', 'motion graphics'],
+		image: ''
+	},
+	{
+		title: 'Campañas con banners animados',
+		type: 'Marketing digital',
+		status: 'Portfolio',
+		summary:
+			'Secuencia de piezas audiovisuales y banners estáticos diseñados para redes y medios digitales.',
+		tools: ['After Effects', 'Premiere', 'diseño de assets'],
+		image: ''
+	},
+	{
+		title: 'Portfolio de servicios',
+		type: 'Presentación profesional',
+		status: 'Actual',
+		summary:
+			'Este sitio es un ejemplo de cómo presento mis capacidades: diseño, copy y desarrollo web integrados.',
+		tools: ['Astro', 'CSS moderno', 'experiencia UX'],
+		image: ''
+	},
+	{
+		title: 'Nueva landing',
+		type: 'Próximo caso',
+		status: 'Próximamente',
+		summary:
+			'Espacio reservado para añadir nuevas landings, campañas o proyectos web cuando estén listos.',
+		tools: ['Diseño web', 'marketing', 'desarrollo'],
+		image: ''
+	}
+];
+
 ---
 
 <Layout
@@ -26,7 +66,8 @@ const capabilityGroups = [
 		<header class="topbar">
 			<a class="brand" href="#top" aria-label="Ir al inicio"><img src="/favicon.svg" alt="Logo" /> Ángel Collazo Díaz</a>
 			<nav aria-label="Secciones principales">
-				<a href="#disenos">Diseños</a>
+			<a href="#proyectos">Proyectos</a>
+			<a href="#disenos">Diseños</a>
 				<a href="#contacto">Contacto</a>
 				<a href="https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/" target="_blank" rel="noreferrer">LinkedIn</a>
 			</nav>
@@ -38,8 +79,9 @@ const capabilityGroups = [
 				<h2>Diseño y desarrollo web para marcas que quieren posicionarse y vender mejor.</h2>
 				<p class="hero-copy">
 					Ofrezco mi experiencia para una estrategia clara, identidad visual definida y desarrollo full stack para hacerlo todo posible.
-				</p>
-			</section>
+				</p>			<div class="hero-actions">
+				<a class="button-primary" href="#proyectos">Ver proyectos</a>
+			</div>			</section>
 
 			<section class="section capabilities-band">
 				<div class="capabilities-intro">
@@ -64,7 +106,39 @@ const capabilityGroups = [
 				</div>
 			</section>
 
-			<DesignUploader />
+		<section id="proyectos" class="section projects-band">
+			<div class="projects-heading">
+				<p class="section-kicker">Proyectos</p>
+				<h3>Más trabajo hecho por mí, con foco en resultados y estética.</h3>
+			</div>
+
+			<div class="projects-grid">
+				{featuredProjects.map((project, index) => (
+					<article class="project-card">
+						<div class="project-visual">
+							{project.image ? (
+								<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+							) : (
+								<span>{String(index + 1).padStart(2, '0')}</span>
+							)}
+						</div>
+						<div class="project-content">
+							<div class="project-meta">
+								<p class="project-category">{project.type}</p>
+								<p class="project-status">{project.status}</p>
+							</div>
+							<h4>{project.title}</h4>
+							<p>{project.summary}</p>
+							<div class="project-tools" aria-label="Herramientas usadas">
+								{project.tools.map((tool) => <span>{tool}</span>)}
+							</div>
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<DesignUploader />
 
 			<section id="contacto" class="section contact-band">
 				<div class="contact-copy">
@@ -263,6 +337,165 @@ const capabilityGroups = [
 		max-width: 72ch;
 		margin: 24px auto 0;
 		font-size: 1.08rem;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		justify-content: center;
+		margin-top: 28px;
+	}
+
+	.button-primary,
+	.button-secondary {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 14px 22px;
+		border-radius: 999px;
+		text-decoration: none;
+		font-weight: 700;
+		transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+	}
+
+	.button-primary {
+		background: linear-gradient(90deg, #6a3cfd 0%, #2d9cdb 100%);
+		color: #ffffff;
+	}
+
+	.button-secondary {
+		background: rgba(255, 255, 255, 0.88);
+		color: var(--text);
+		border: 1px solid rgba(133, 112, 76, 0.2);
+	}
+
+	.button-primary:hover,
+	.button-secondary:hover {
+		transform: translateY(-1px);
+	}
+
+	.projects-band {
+		padding: 34px;
+		border-radius: 32px;
+		background: linear-gradient(180deg, rgba(255, 249, 241, 0.94), rgba(255, 255, 255, 0.65));
+		box-shadow: var(--shadow-soft);
+	}
+
+	.projects-heading {
+		max-width: 52ch;
+		margin-bottom: 28px;
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 22px;
+	}
+
+	.project-card {
+		display: grid;
+		grid-template-columns: 156px minmax(0, 1fr);
+		gap: 20px;
+		padding: 18px;
+		border-radius: 24px;
+		background: rgba(255, 255, 255, 0.9);
+		border: 1px solid rgba(162, 135, 87, 0.12);
+	}
+
+	.project-visual {
+		display: grid;
+		place-items: center;
+		min-height: 156px;
+		border-radius: 18px;
+		overflow: hidden;
+		background:
+			linear-gradient(135deg, rgba(106, 60, 253, 0.12), rgba(45, 156, 219, 0.12)),
+			rgba(255, 250, 243, 0.8);
+		color: var(--accent-deep);
+	}
+
+	.project-visual img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.project-visual span {
+		font-family: var(--font-display);
+		font-size: 2.5rem;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.project-content {
+		display: grid;
+		align-content: start;
+		gap: 12px;
+		min-width: 0;
+	}
+
+	.project-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.project-card h4 {
+		font-size: 1.25rem;
+		margin: 0;
+	}
+
+	.project-category {
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: var(--accent-deep);
+		margin: 0;
+	}
+
+	.project-status {
+		padding: 6px 10px;
+		border-radius: 999px;
+		background: rgba(162, 135, 87, 0.1);
+		font-size: 0.78rem;
+		font-weight: 800;
+		line-height: 1.2;
+		color: var(--text);
+	}
+
+	.project-tools {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		color: var(--text);
+	}
+
+	.project-tools span {
+		padding: 6px 10px;
+		border-radius: 999px;
+		background: rgba(255, 250, 243, 0.9);
+		border: 1px solid rgba(162, 135, 87, 0.12);
+		font-size: 0.82rem;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	@media (max-width: 980px) {
+		.projects-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.project-card {
+			grid-template-columns: 1fr;
+		}
+
+		.project-visual {
+			min-height: 132px;
+		}
 	}
 
 	.capabilities-band,

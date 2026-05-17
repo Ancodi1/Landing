@@ -32,6 +32,21 @@ const categoryAssets = [
 			'Banner disenado para mostrar nuevos productos, con espacio en el lado izquierdo para mostrar informacion relevante de la promocion.',
 		width: 1110,
 		height: 265
+	},
+	{
+		src: '/imx/banner-novedades-movil.png',
+		title: 'Banner móvil de novedades',
+		description:
+			'Pieza diseñada para captar atención en formato móvil con un mensaje directo y visual atractivo.',
+		width: 1110,
+		height: 265
+	},
+	{
+		src: '/imx/banner-toro-loco.png',
+		title: 'Banner promocional Toro Loco',
+		description: 'Banner de campaña con información clara y estilo llamativo.',
+		width: 1110,
+		height: 265
 	}
 ];
 
@@ -89,26 +104,51 @@ const videoAssets = [
 	<section class="asset-group">
 		<div class="video-copy">
 			<h4>Banners solidos</h4>
-			<p>Los espacios en blanco están indicar TCA, información y acceso directos a puntos de interés.</p>
+			<p>Los espacios en blanco están pensados para CTA, información y accesos directos a puntos de interés.</p>
 		</div>
 	</section>
 
 	<section class="asset-group">
-		<div class="category-stack">
-			{categoryAssets.map((asset) => (
-				<figure class="asset-card category-card">
-					<a href={asset.src} target="_blank" rel="noreferrer">
-						<img
-							src={asset.src}
-							alt={asset.title}
-							width={asset.width}
-							height={asset.height}
-							loading="lazy"
-							decoding="async"
-						/>
-					</a>
-				</figure>
-			))}
+		<div class="banner-carousel" data-banner-carousel>
+			<button class="carousel-button carousel-button-prev" type="button" aria-label="Ver banner anterior">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M15.5 5.5 9 12l6.5 6.5" />
+				</svg>
+			</button>
+			<div class="carousel-viewport">
+				<div class="category-track">
+					{categoryAssets.map((asset) => (
+						<figure class="asset-card category-card">
+							<a href={asset.src} target="_blank" rel="noreferrer">
+								<img
+									src={asset.src}
+									alt={asset.title}
+									width={asset.width}
+									height={asset.height}
+									loading="lazy"
+									decoding="async"
+								/>
+							</a>
+						</figure>
+					))}
+				</div>
+			</div>
+			<button class="carousel-button carousel-button-next" type="button" aria-label="Ver banner siguiente">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="m8.5 5.5 6.5 6.5-6.5 6.5" />
+				</svg>
+			</button>
+			<div class="carousel-dots" aria-label="Banners disponibles">
+				{categoryAssets.map((asset, index) => (
+					<button
+						class:list={['carousel-dot', { 'is-active': index === 0 }]}
+						type="button"
+						aria-label={`Ver ${asset.title}`}
+						aria-current={index === 0 ? 'true' : 'false'}
+						data-slide-index={index}
+					></button>
+				))}
+			</div>
 		</div>
 	</section>
 
@@ -134,6 +174,111 @@ const videoAssets = [
 		</div>
 	</section>
 </section>
+
+<script>
+	const carousels = document.querySelectorAll('[data-banner-carousel]');
+
+	carousels.forEach((carousel) => {
+		const viewport = carousel.querySelector('.carousel-viewport');
+		const slides = Array.from(carousel.querySelectorAll('.category-card'));
+		const dots = Array.from(carousel.querySelectorAll('.carousel-dot'));
+		const nextButton = carousel.querySelector('.carousel-button-next');
+		const prevButton = carousel.querySelector('.carousel-button-prev');
+		const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		let autoplayId;
+
+		if (!(viewport instanceof HTMLElement) || !(nextButton instanceof HTMLButtonElement) || !(prevButton instanceof HTMLButtonElement)) {
+			return;
+		}
+
+		const getActiveIndex = () => Math.round(viewport.scrollLeft / viewport.clientWidth);
+
+		const scrollToSlide = (index) => {
+			const normalizedIndex = (index + slides.length) % slides.length;
+
+			viewport.scrollTo({
+				left: normalizedIndex * viewport.clientWidth,
+				behavior: motionQuery.matches ? 'auto' : 'smooth'
+			});
+		};
+
+		const scrollBySlide = (direction) => {
+			const nextIndex = getActiveIndex() + direction;
+
+			if (nextIndex >= slides.length) {
+				scrollToSlide(0);
+				return;
+			}
+
+			if (nextIndex < 0) {
+				scrollToSlide(slides.length - 1);
+				return;
+			}
+
+			viewport.scrollBy({
+				left: direction * viewport.clientWidth,
+				behavior: motionQuery.matches ? 'auto' : 'smooth'
+			});
+		};
+
+		const updateDots = () => {
+			const activeIndex = getActiveIndex();
+
+			dots.forEach((dot, index) => {
+				dot.classList.toggle('is-active', index === activeIndex);
+				dot.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
+			});
+		};
+
+		const stopAutoplay = () => {
+			if (autoplayId) {
+				window.clearInterval(autoplayId);
+			}
+		};
+
+		const startAutoplay = () => {
+			stopAutoplay();
+
+			if (motionQuery.matches || slides.length < 2) {
+				return;
+			}
+
+			autoplayId = window.setInterval(() => {
+				scrollBySlide(1);
+			}, 3600);
+		};
+
+		prevButton.addEventListener('click', () => {
+			scrollBySlide(-1);
+			startAutoplay();
+		});
+
+		nextButton.addEventListener('click', () => {
+			scrollBySlide(1);
+			startAutoplay();
+		});
+
+		dots.forEach((dot) => {
+			if (!(dot instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			dot.addEventListener('click', () => {
+				scrollToSlide(Number(dot.dataset.slideIndex));
+				startAutoplay();
+			});
+		});
+
+		viewport.addEventListener('scroll', updateDots, { passive: true });
+		carousel.addEventListener('mouseenter', stopAutoplay);
+		carousel.addEventListener('mouseleave', startAutoplay);
+		carousel.addEventListener('focusin', stopAutoplay);
+		carousel.addEventListener('focusout', startAutoplay);
+
+		updateDots();
+		startAutoplay();
+	});
+</script>
 
 <style>
 	.media-section {
@@ -210,21 +355,117 @@ const videoAssets = [
 		width: min(100%, 500px);
 	}
 
-	.category-stack {
+	.banner-carousel {
+		position: relative;
 		display: grid;
-		gap: 24px;
+		grid-template-columns: 48px minmax(0, 1fr) 48px;
+		grid-template-areas:
+			"prev viewport next"
+			"dots dots dots";
+		align-items: center;
+		gap: 14px;
+	}
+
+	.carousel-button-prev {
+		grid-area: prev;
+	}
+
+	.carousel-button-next {
+		grid-area: next;
+	}
+
+	.carousel-viewport {
+		grid-area: viewport;
+		position: relative;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scroll-behavior: smooth;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(133, 112, 76, 0.38) transparent;
+	}
+
+	.category-track {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(88%, 100%);
+		gap: 18px;
 	}
 
 	.category-card a {
+		min-height: 180px;
+		align-items: center;
 		border-radius: 24px;
 		overflow: hidden;
 		background: rgba(255, 252, 247, 0.2);
+	}
+
+	.category-card {
+		scroll-snap-align: center;
 	}
 
 	.category-card img {
 		width: min(100%, 1110px);
 		border-radius: 24px;
 		clip-path: inset(0 round 24px);
+	}
+
+	.carousel-dots {
+		grid-area: dots;
+		display: flex;
+		justify-content: center;
+		gap: 9px;
+	}
+
+	.carousel-dot {
+		width: 9px;
+		height: 9px;
+		padding: 0;
+		border: 0;
+		border-radius: 999px;
+		background: rgba(133, 112, 76, 0.3);
+		cursor: pointer;
+		transition:
+			width 0.22s ease,
+			background-color 0.22s ease;
+	}
+
+	.carousel-dot.is-active {
+		width: 28px;
+		background: var(--accent-deep);
+	}
+
+	.carousel-button {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		border: 1px solid rgba(133, 112, 76, 0.2);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.86);
+		color: var(--text);
+		cursor: pointer;
+		box-shadow: 0 10px 24px rgba(28, 21, 12, 0.05);
+		transition:
+			transform 0.2s ease,
+			background-color 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.carousel-button:hover {
+		transform: translateY(-1px);
+		background: rgba(255, 255, 255, 0.98);
+		border-color: rgba(133, 112, 76, 0.34);
+	}
+
+	.carousel-button svg {
+		width: 22px;
+		height: 22px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.4;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 
 	figcaption,
@@ -304,6 +545,24 @@ const videoAssets = [
 
 		.video-frame {
 			padding: 12px 12px 0;
+		}
+
+		.banner-carousel {
+			grid-template-columns: 40px minmax(0, 1fr) 40px;
+			gap: 8px;
+		}
+
+		.category-track {
+			grid-auto-columns: 100%;
+		}
+
+		.carousel-button {
+			width: 40px;
+			height: 40px;
+		}
+
+		.category-card a {
+			min-height: 120px;
 		}
 	}
 </style>
