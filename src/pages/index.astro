@@ -111,25 +111,35 @@ const featuredProjects = [
 		<section id="proyectos" class="section projects-band">
 			<div class="projects-heading">
 				<p class="section-kicker">Proyectos</p>
-				<h3>Más trabajo hecho por mí, con foco en resultados y estética.</h3>
+				<h3>Trabajos hechos por mí, con foco en resultados y estética.</h3>
 			</div>
 
 			<div class="projects-grid">
 				{featuredProjects.map((project, index) => (
 					<article class="project-card">
-						<a
-							class:list={['project-visual', { 'project-visual-link': project.url }]}
-							href={project.url ?? undefined}
-							target={project.url ? '_blank' : undefined}
-							rel={project.url ? 'noreferrer' : undefined}
-							aria-label={project.url ? `Ver proyecto ${project.title}` : undefined}
-						>
-							{project.image ? (
-								<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
-							) : (
-								<span>{String(index + 1).padStart(2, '0')}</span>
-							)}
-						</a>
+						{project.url ? (
+							<a
+								class="project-visual project-visual-link"
+								href={project.url}
+								target="_blank"
+								rel="noreferrer"
+								aria-label={`Ver proyecto ${project.title}`}
+							>
+								{project.image ? (
+									<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+								) : (
+									<span>{String(index + 1).padStart(2, '0')}</span>
+								)}
+							</a>
+						) : (
+							<div class="project-visual">
+								{project.image ? (
+									<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+								) : (
+									<span>{String(index + 1).padStart(2, '0')}</span>
+								)}
+							</div>
+						)}
 						<div class="project-content">
 							<div class="project-meta">
 								<p class="project-category">{project.type}</p>
