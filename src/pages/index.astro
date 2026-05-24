@@ -19,39 +19,40 @@ const capabilityGroups = [
 
 const featuredProjects = [
 	{
-		title: 'Landing para Venditalia',
+		title: 'Audiovisual para landing Venditalia 2026',
 		type: 'Evento B2B',
 		status: 'Publicado',
 		summary:
-			'Landing comercial con diseño visual coherente y una navegación clara para presentar el proyecto.',
-		tools: ['Astro', 'HTML', 'CSS', 'motion graphics'],
+			'Idea, diseño y montaje de todo el contenido audiovisual.',
+		url: 'https://www.distribucionmayorista.business/',
 		image: ''
 	},
 	{
-		title: 'Campañas con banners animados',
-		type: 'Marketing digital',
+		title: 'Alma Matter',
+		type: 'Web para gestión total de clases y alumnos',
 		status: 'Portfolio',
 		summary:
-			'Secuencia de piezas audiovisuales y banners estáticos diseñados para redes y medios digitales.',
-		tools: ['After Effects', 'Premiere', 'diseño de assets'],
-		image: ''
+			'Proyecto diseñado para la gestión de clases y alumnos desde una única plataforma.',
+		tools: ['PHP', 'SQL', 'HTML', 'CSS', 'JavaScript'],
+		url: 'https://github.com/Ancodi1/Academia-Alma-Matter-Ancodi',
+		image: '/imx/logo.png'
 	},
 	{
-		title: 'Portfolio de servicios',
+		title: 'Web Nana Nails',
 		type: 'Presentación profesional',
 		status: 'Actual',
 		summary:
 			'Este sitio es un ejemplo de cómo presento mis capacidades: diseño, copy y desarrollo web integrados.',
-		tools: ['Astro', 'CSS moderno', 'experiencia UX'],
+		tools: ['Astro', 'HTML', 'CSS', 'Experiencia UX'],
 		image: ''
 	},
 	{
-		title: 'Nueva landing',
+		title: 'Web De Ninghures',
 		type: 'Próximo caso',
 		status: 'Próximamente',
 		summary:
 			'Espacio reservado para añadir nuevas landings, campañas o proyectos web cuando estén listos.',
-		tools: ['Diseño web', 'marketing', 'desarrollo'],
+		tools: ['Diseño web', 'Marketing', 'Desarrollo'],
 		image: ''
 	}
 ];
@@ -60,14 +61,14 @@ const featuredProjects = [
 
 <Layout
 	title="Portfolio | Marketing, diseño y desarrollo web"
-	description="Landing personal para mostrar conocimientos en marketing, diseño y desarrollo web desde una propuesta clara y visualmente solida."
+	description="Landing personal para mostrar conocimientos en marketing, diseño y desarrollo web desde una propuesta clara y visualmente sólida."
 >
 	<div class="page-shell" id="top">
 		<header class="topbar">
 			<a class="brand" href="#top" aria-label="Ir al inicio"><img src="/favicon.svg" alt="Logo" /> Ángel Collazo Díaz</a>
 			<nav aria-label="Secciones principales">
-			<a href="#proyectos">Proyectos</a>
-			<a href="#disenos">Diseños</a>
+				<a href="#proyectos">Proyectos</a>
+				<a href="#disenos">Diseños</a>
 				<a href="#contacto">Contacto</a>
 				<a href="https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/" target="_blank" rel="noreferrer">LinkedIn</a>
 			</nav>
@@ -76,20 +77,22 @@ const featuredProjects = [
 		<main>
 			<section class="hero section">
 				<p class="eyebrow">Diseño, desarrollo y marketing digital</p>
-				<h2>Diseño y desarrollo web para marcas que quieren posicionarse y vender mejor.</h2>
+				<h1>Diseño y desarrollo web para marcas que quieren posicionarse y vender mejor.</h1>
 				<p class="hero-copy">
 					Ofrezco mi experiencia para una estrategia clara, identidad visual definida y desarrollo full stack para hacerlo todo posible.
-				</p>			<div class="hero-actions">
-				<a class="button-primary" href="#proyectos">Ver proyectos</a>
-			</div>			</section>
+				</p>
+				<div class="hero-actions">
+					<a class="button-primary" href="#proyectos">Ver proyectos</a>
+				</div>
+			</section>
 
 			<section class="section capabilities-band">
 				<div class="capabilities-intro">
 					<p class="section-kicker">Aptitudes</p>
-					<h3>Me especialidad es unir desarrollo, marketing y diseño dentro de una misma web.</h3>
+					<h2>Mi especialidad es unir desarrollo, marketing y diseño dentro de una misma web.</h2>
 					<p>
-						Hago que cada parte del proyecto funcione en conjunto: estructura, tecnologia,
-						comunicacion visual y herramientas de captacion.
+						Hago que cada parte del proyecto funcione en conjunto: estructura, tecnología,
+						comunicación visual y herramientas de captación.
 					</p>
 				</div>
 
@@ -97,7 +100,6 @@ const featuredProjects = [
 					{capabilityGroups.map((group) => (
 						<article class="capability-card">
 							<h3>{group.title}</h3>
-							<p>{group.text}</p>
 							<p class="capability-tools">
 								<span>Herramientas:</span> {group.items.join(', ')}
 							</p>
@@ -115,23 +117,42 @@ const featuredProjects = [
 			<div class="projects-grid">
 				{featuredProjects.map((project, index) => (
 					<article class="project-card">
-						<div class="project-visual">
+						<a
+							class:list={['project-visual', { 'project-visual-link': project.url }]}
+							href={project.url ?? undefined}
+							target={project.url ? '_blank' : undefined}
+							rel={project.url ? 'noreferrer' : undefined}
+							aria-label={project.url ? `Ver proyecto ${project.title}` : undefined}
+						>
 							{project.image ? (
 								<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
 							) : (
 								<span>{String(index + 1).padStart(2, '0')}</span>
 							)}
-						</div>
+						</a>
 						<div class="project-content">
 							<div class="project-meta">
 								<p class="project-category">{project.type}</p>
 								<p class="project-status">{project.status}</p>
 							</div>
-							<h4>{project.title}</h4>
+							<h4>
+								{project.url ? (
+									<a href={project.url} target="_blank" rel="noreferrer">{project.title}</a>
+								) : (
+									project.title
+								)}
+							</h4>
 							<p>{project.summary}</p>
-							<div class="project-tools" aria-label="Herramientas usadas">
-								{project.tools.map((tool) => <span>{tool}</span>)}
-							</div>
+							{project.tools && (
+								<div class="project-tools" aria-label="Herramientas usadas">
+									{project.tools.map((tool) => <span>{tool}</span>)}
+								</div>
+							)}
+							{project.url && (
+								<a class="project-link" href={project.url} target="_blank" rel="noreferrer">
+									{project.url.includes('github.com') ? 'Ver repositorio' : 'Ver proyecto'}
+								</a>
+							)}
 						</div>
 					</article>
 				))}
@@ -150,7 +171,6 @@ const featuredProjects = [
 					<div class="contact-card">
 						<p class="contact-name">Ángel Collazo Díaz</p>
 						<p class="contact-role">Disponible para proyectos freelance</p>
-						<a class="contact-email" href="mailto:XXXXXXXXXXXXXX@gmail.com">XXXXXXXXXX@gmail.com</a>
 						<a
 							class="linkedin-card"
 							href="https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/"
@@ -227,8 +247,8 @@ const featuredProjects = [
 	}
 
 	.brand img {
-		width: 102;
-		height: 102px;
+		width: 42px;
+		height: 42px;
 	}
 
 	nav {
@@ -299,8 +319,8 @@ const featuredProjects = [
 	h1 {
 		max-width: 24ch;
 		margin: 0 auto;
-		font-size: clamp(3.2rem, 6vw, 5rem);
-		line-height: 1.02;
+		font-size: clamp(2.35rem, 4.6vw, 3.8rem);
+		line-height: 1.04;
 		text-align: center;
 		text-wrap: balance;
 	}
@@ -325,7 +345,7 @@ const featuredProjects = [
 
 	.hero {
 		text-align: center;
-		padding: 46px 28px 54px;
+		padding: 34px 24px 38px;
 		border-radius: 36px;
 		background:
 			radial-gradient(circle at top, rgba(255, 255, 255, 0.55), transparent 60%),
@@ -335,8 +355,8 @@ const featuredProjects = [
 
 	.hero-copy {
 		max-width: 72ch;
-		margin: 24px auto 0;
-		font-size: 1.08rem;
+		margin: 18px auto 0;
+		font-size: 1rem;
 	}
 
 	.hero-actions {
@@ -344,7 +364,7 @@ const featuredProjects = [
 		flex-wrap: wrap;
 		gap: 14px;
 		justify-content: center;
-		margin-top: 28px;
+		margin-top: 20px;
 	}
 
 	.button-primary,
@@ -413,6 +433,17 @@ const featuredProjects = [
 			linear-gradient(135deg, rgba(106, 60, 253, 0.12), rgba(45, 156, 219, 0.12)),
 			rgba(255, 250, 243, 0.8);
 		color: var(--accent-deep);
+		text-decoration: none;
+		transition: transform 0.22s ease, box-shadow 0.22s ease;
+	}
+
+	.project-visual-link {
+		cursor: pointer;
+	}
+
+	.project-visual-link:hover {
+		transform: translateY(-4px) scale(1.04);
+		box-shadow: 0 20px 42px rgba(28, 21, 12, 0.16);
 	}
 
 	.project-visual img {
@@ -448,6 +479,18 @@ const featuredProjects = [
 		margin: 0;
 	}
 
+	.project-card h4 a {
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition: color 0.2s ease, border-color 0.2s ease;
+	}
+
+	.project-card h4 a:hover {
+		color: var(--accent-deep);
+		border-bottom-color: rgba(123, 99, 57, 0.32);
+	}
+
 	.project-category {
 		font-size: 0.95rem;
 		font-weight: 700;
@@ -480,6 +523,22 @@ const featuredProjects = [
 		font-size: 0.82rem;
 		font-weight: 700;
 		line-height: 1.2;
+	}
+
+	.project-link {
+		width: fit-content;
+		margin-top: 2px;
+		font-size: 0.92rem;
+		font-weight: 800;
+		color: var(--accent-deep);
+		text-decoration: none;
+		border-bottom: 1px solid rgba(123, 99, 57, 0.32);
+		padding-bottom: 3px;
+	}
+
+	.project-link:hover {
+		color: var(--text);
+		border-bottom-color: rgba(20, 19, 22, 0.34);
 	}
 
 	@media (max-width: 980px) {
