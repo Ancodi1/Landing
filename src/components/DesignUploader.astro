@@ -118,7 +118,16 @@ const videoAssets = [
 				<div class="category-track">
 					{categoryAssets.map((asset) => (
 						<figure class="asset-card category-card">
-							<a href={asset.src} target="_blank" rel="noreferrer">
+							<a
+								class="banner-zoom-trigger"
+								href={asset.src}
+								target="_blank"
+								rel="noreferrer"
+								aria-label={`Ampliar ${asset.title}`}
+								data-banner-zoom
+								data-banner-src={asset.src}
+								data-banner-title={asset.title}
+							>
 								<img
 									src={asset.src}
 									alt={asset.title}
@@ -150,6 +159,29 @@ const videoAssets = [
 			</div>
 		</div>
 	</section>
+
+	<dialog class="banner-zoom-dialog" data-banner-zoom-dialog aria-label="Vista ampliada del banner">
+		<div class="banner-zoom-toolbar">
+			<button class="banner-zoom-control" type="button" aria-label="Reducir zoom" data-banner-zoom-out>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M5 12h14" />
+				</svg>
+			</button>
+			<button class="banner-zoom-control" type="button" aria-label="Aumentar zoom" data-banner-zoom-in>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M12 5v14M5 12h14" />
+				</svg>
+			</button>
+			<button class="banner-zoom-control" type="button" aria-label="Cerrar vista ampliada" data-banner-zoom-close>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M6 6l12 12M18 6 6 18" />
+				</svg>
+			</button>
+		</div>
+		<div class="banner-zoom-canvas">
+			<img class="banner-zoom-image" src="" alt="" data-banner-zoom-image />
+		</div>
+	</dialog>
 
 	<section class="asset-group">
 		<div class="video-copy">
@@ -277,6 +309,56 @@ const videoAssets = [
 		updateDots();
 		startAutoplay();
 	});
+
+	const zoomDialog = document.querySelector('[data-banner-zoom-dialog]');
+	const zoomImage = document.querySelector('[data-banner-zoom-image]');
+	const zoomTriggers = document.querySelectorAll('[data-banner-zoom]');
+	const zoomInButton = document.querySelector('[data-banner-zoom-in]');
+	const zoomOutButton = document.querySelector('[data-banner-zoom-out]');
+	const zoomCloseButton = document.querySelector('[data-banner-zoom-close]');
+	let bannerZoom = 1.35;
+
+	const setBannerZoom = (nextZoom) => {
+		bannerZoom = Math.min(Math.max(nextZoom, 1), 2.4);
+
+		if (zoomDialog instanceof HTMLElement) {
+			zoomDialog.style.setProperty('--banner-zoom-width', `${bannerZoom * 100}%`);
+		}
+	};
+
+	if (zoomDialog instanceof HTMLDialogElement && zoomImage instanceof HTMLImageElement) {
+		zoomTriggers.forEach((trigger) => {
+			if (!(trigger instanceof HTMLAnchorElement)) {
+				return;
+			}
+
+			trigger.addEventListener('click', (event) => {
+				event.preventDefault();
+				zoomImage.src = trigger.dataset.bannerSrc || trigger.href;
+				zoomImage.alt = trigger.dataset.bannerTitle || 'Banner ampliado';
+				setBannerZoom(window.matchMedia('(max-width: 720px)').matches ? 1.6 : 1.2);
+				zoomDialog.showModal();
+			});
+		});
+
+		if (zoomInButton instanceof HTMLButtonElement) {
+			zoomInButton.addEventListener('click', () => setBannerZoom(bannerZoom + 0.25));
+		}
+
+		if (zoomOutButton instanceof HTMLButtonElement) {
+			zoomOutButton.addEventListener('click', () => setBannerZoom(bannerZoom - 0.25));
+		}
+
+		if (zoomCloseButton instanceof HTMLButtonElement) {
+			zoomCloseButton.addEventListener('click', () => zoomDialog.close());
+		}
+
+		zoomDialog.addEventListener('click', (event) => {
+			if (event.target === zoomDialog) {
+				zoomDialog.close();
+			}
+		});
+	}
 </script>
 
 <style>
@@ -409,6 +491,78 @@ const videoAssets = [
 		clip-path: inset(0 round 24px);
 	}
 
+	.banner-zoom-trigger {
+		cursor: zoom-in;
+	}
+
+	.banner-zoom-dialog {
+		--banner-zoom-width: 120%;
+		width: min(1120px, calc(100vw - 28px));
+		height: min(78vh, 720px);
+		padding: 0;
+		border: 0;
+		border-radius: 24px;
+		background: rgba(255, 252, 247, 0.96);
+		box-shadow: 0 28px 90px rgba(28, 21, 12, 0.28);
+		overflow: hidden;
+	}
+
+	.banner-zoom-dialog::backdrop {
+		background: rgba(20, 19, 22, 0.58);
+		backdrop-filter: blur(8px);
+	}
+
+	.banner-zoom-toolbar {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		z-index: 2;
+		display: flex;
+		gap: 8px;
+	}
+
+	.banner-zoom-control {
+		display: grid;
+		place-items: center;
+		width: 42px;
+		height: 42px;
+		padding: 0;
+		border: 1px solid rgba(133, 112, 76, 0.22);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.9);
+		color: var(--text);
+		cursor: pointer;
+		box-shadow: 0 10px 24px rgba(28, 21, 12, 0.1);
+	}
+
+	.banner-zoom-control svg {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.4;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.banner-zoom-canvas {
+		width: 100%;
+		height: 100%;
+		padding: 76px 24px 24px;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.banner-zoom-image {
+		display: block;
+		width: var(--banner-zoom-width);
+		max-width: none;
+		height: auto;
+		margin: 0 auto;
+		border-radius: 18px;
+		box-shadow: 0 16px 44px rgba(28, 21, 12, 0.14);
+	}
+
 	.carousel-dots {
 		grid-area: dots;
 		display: flex;
@@ -531,10 +685,6 @@ const videoAssets = [
 	}
 
 	@media (max-width: 720px) {
-		.media-section {
-			padding: 18px 12px;
-		}
-
 		.asset-card a,
 		figcaption,
 		.video-copy {
@@ -551,65 +701,41 @@ const videoAssets = [
 		}
 
 		.banner-carousel {
-			grid-template-columns: minmax(0, 1fr);
-			grid-template-areas:
-				"viewport"
-				"dots";
-			gap: 12px;
-		}
-
-		.carousel-viewport {
-			border-radius: 20px;
-			scrollbar-width: none;
-		}
-
-		.carousel-viewport::-webkit-scrollbar {
-			display: none;
+			grid-template-columns: 40px minmax(0, 1fr) 40px;
+			gap: 8px;
 		}
 
 		.category-track {
 			grid-auto-columns: 100%;
-			gap: 0;
 		}
 
 		.carousel-button {
-			position: absolute;
-			top: clamp(88px, 27vw, 116px);
-			z-index: 2;
-			width: 38px;
-			height: 38px;
-			background: rgba(255, 255, 255, 0.92);
-			box-shadow: 0 10px 26px rgba(28, 21, 12, 0.14);
-			transform: translateY(-50%);
-		}
-
-		.carousel-button:hover {
-			transform: translateY(-50%);
-		}
-
-		.carousel-button-prev {
-			left: 10px;
-		}
-
-		.carousel-button-next {
-			right: 10px;
+			width: 40px;
+			height: 40px;
 		}
 
 		.category-card a {
-			height: clamp(176px, 54vw, 232px);
-			min-height: 0;
-			padding: 0;
+			min-height: 120px;
+		}
+
+		.banner-zoom-dialog {
+			width: calc(100vw - 18px);
+			height: 76vh;
 			border-radius: 20px;
 		}
 
-		.category-card img {
-			width: 100%;
-			height: 100%;
-			max-width: none;
-			border-radius: 20px;
-			clip-path: inset(0 round 20px);
-			object-fit: cover;
-			object-position: center;
+		.banner-zoom-toolbar {
+			top: 10px;
+			right: 10px;
+		}
+
+		.banner-zoom-control {
+			width: 38px;
+			height: 38px;
+		}
+
+		.banner-zoom-canvas {
+			padding: 66px 14px 18px;
 		}
 	}
 </style>
