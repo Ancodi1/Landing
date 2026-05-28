@@ -316,10 +316,12 @@ const videoAssets = [
 	const zoomInButton = document.querySelector('[data-banner-zoom-in]');
 	const zoomOutButton = document.querySelector('[data-banner-zoom-out]');
 	const zoomCloseButton = document.querySelector('[data-banner-zoom-close]');
+	const mobileZoomQuery = window.matchMedia('(max-width: 720px)');
 	let bannerZoom = 1.35;
 
 	const setBannerZoom = (nextZoom) => {
-		bannerZoom = Math.min(Math.max(nextZoom, 1), 2.4);
+		const maxZoom = mobileZoomQuery.matches ? 2.8 : 2.4;
+		bannerZoom = Math.min(Math.max(nextZoom, 1), maxZoom);
 
 		if (zoomDialog instanceof HTMLElement) {
 			zoomDialog.style.setProperty('--banner-zoom-width', `${bannerZoom * 100}%`);
@@ -336,7 +338,7 @@ const videoAssets = [
 				event.preventDefault();
 				zoomImage.src = trigger.dataset.bannerSrc || trigger.href;
 				zoomImage.alt = trigger.dataset.bannerTitle || 'Banner ampliado';
-				setBannerZoom(window.matchMedia('(max-width: 720px)').matches ? 1.6 : 1.2);
+				setBannerZoom(mobileZoomQuery.matches ? 1.95 : 1.2);
 				zoomDialog.showModal();
 			});
 		});
@@ -354,7 +356,13 @@ const videoAssets = [
 		}
 
 		zoomDialog.addEventListener('click', (event) => {
-			if (event.target === zoomDialog) {
+			const target = event.target;
+
+			if (!(target instanceof Element)) {
+				return;
+			}
+
+			if (!target.closest('.banner-zoom-image, .banner-zoom-toolbar')) {
 				zoomDialog.close();
 			}
 		});
@@ -505,6 +513,7 @@ const videoAssets = [
 		background: rgba(255, 252, 247, 0.96);
 		box-shadow: 0 28px 90px rgba(28, 21, 12, 0.28);
 		overflow: hidden;
+		margin: auto;
 	}
 
 	.banner-zoom-dialog::backdrop {
@@ -719,23 +728,45 @@ const videoAssets = [
 		}
 
 		.banner-zoom-dialog {
-			width: calc(100vw - 18px);
-			height: 76vh;
-			border-radius: 20px;
+			width: 100vw;
+			max-width: none;
+			height: 100dvh;
+			max-height: none;
+			border-radius: 0;
+			background: transparent;
+			box-shadow: none;
+		}
+
+		.banner-zoom-dialog::backdrop {
+			background: rgba(20, 19, 22, 0.76);
+			backdrop-filter: blur(3px);
 		}
 
 		.banner-zoom-toolbar {
-			top: 10px;
-			right: 10px;
+			top: max(14px, env(safe-area-inset-top));
+			right: max(14px, env(safe-area-inset-right));
+		}
+
+		.banner-zoom-canvas {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			padding: max(68px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+			background: rgba(20, 19, 22, 0.76);
 		}
 
 		.banner-zoom-control {
 			width: 38px;
 			height: 38px;
+			background: rgba(255, 255, 255, 0.94);
 		}
 
-		.banner-zoom-canvas {
-			padding: 66px 14px 18px;
+		.banner-zoom-image {
+			width: var(--banner-zoom-width);
+			max-width: none;
+			border-radius: 16px;
+			box-shadow: 0 22px 60px rgba(0, 0, 0, 0.38);
 		}
 	}
 </style>
