@@ -17,7 +17,7 @@ const flyerAssets = [
 ];
 
 const desktopBannerAsset = {
-	src: '/imx/MUESTRABANNERS.png',
+	src: '/imx/MUESTRABANNERS.png?v=2',
 	title: 'Muestra de banners promocionales',
 	width: 1920,
 	height: 1080
@@ -46,13 +46,17 @@ const videoAssets = [
 		src: '/imx/compres-prueba7-banner-pk.mp4',
 		title: 'CompresPrueba7BannerPK',
 		description: 'Nueva pieza de video integrada como primer banner audiovisual.',
-		type: 'video/mp4'
+		type: 'video/mp4',
+		width: 1920,
+		height: 1080
 	},
 	{
 		src: '/imx/durex-fondo-solido.mp4',
 		title: 'Durex Fondo Solido',
 		description: 'Versión de video con fondo sólido integrada como segunda pieza.',
-		type: 'video/mp4'
+		type: 'video/mp4',
+		width: 700,
+		height: 700
 	}
 ];
 ---
@@ -69,25 +73,52 @@ const videoAssets = [
 		<div class="video-copy">
 			<h4>Banners animados</h4>
 		</div>
-		<div class="video-grid">
-			{videoAssets.map((asset) => (
-				<article class="asset-card video-card">
-					<div class="video-frame">
-						<video
-							playsinline
-							preload="metadata"
-							autoplay
-							muted
-							loop
-							disablepictureinpicture
-							controlslist="nofullscreen nodownload noplaybackrate noremoteplayback"
-						>
-							<source src={asset.src} type={asset.type} />
-							Tu navegador no puede reproducir este video.
-						</video>
-					</div>
-				</article>
-			))}
+		<div class="video-carousel" data-video-carousel>
+			<div class="video-carousel-stage">
+				{videoAssets.map((asset, index) => (
+					<article
+						class={`video-slide${index === 0 ? ' is-active' : ''}`}
+						data-video-ratio={`${asset.width} / ${asset.height}`}
+						aria-hidden={index === 0 ? 'false' : 'true'}
+					>
+						<div class="video-main-wrap">
+							<video
+								class="video-main"
+								playsinline
+								preload="metadata"
+								autoplay
+								muted
+								loop
+								disablepictureinpicture
+								controlslist="nofullscreen nodownload noplaybackrate noremoteplayback"
+							>
+								<source src={asset.src} type={asset.type} />
+								Tu navegador no puede reproducir este video.
+							</video>
+						</div>
+					</article>
+				))}
+			</div>
+
+			<div class="video-carousel-controls" aria-label="Controles de banners animados">
+				<button class="video-carousel-button" type="button" data-video-carousel-prev aria-label="Banner anterior">
+					<span aria-hidden="true">&lt;</span>
+				</button>
+				<div class="video-carousel-dots">
+					{videoAssets.map((asset, index) => (
+						<button
+							class={`video-carousel-dot${index === 0 ? ' is-active' : ''}`}
+							type="button"
+							data-video-carousel-dot={index}
+							aria-label={`Ver ${asset.title}`}
+							aria-current={index === 0 ? 'true' : 'false'}
+						/>
+					))}
+				</div>
+				<button class="video-carousel-button" type="button" data-video-carousel-next aria-label="Banner siguiente">
+					<span aria-hidden="true">&gt;</span>
+				</button>
+			</div>
 		</div>
 	</section>
 
@@ -151,6 +182,78 @@ const videoAssets = [
 		</div>
 	</section>
 </section>
+
+<script>
+	document.querySelectorAll('[data-video-carousel]').forEach((carousel) => {
+		const slides = Array.from(carousel.querySelectorAll('.video-slide'));
+		const dots = Array.from(carousel.querySelectorAll('[data-video-carousel-dot]'));
+		const previousButton = carousel.querySelector('[data-video-carousel-prev]');
+		const nextButton = carousel.querySelector('[data-video-carousel-next]');
+		let activeIndex = 0;
+		let timer;
+
+		const setActiveSlide = (nextIndex) => {
+			activeIndex = (nextIndex + slides.length) % slides.length;
+			const activeSlide = slides[activeIndex];
+			const stage = carousel.querySelector('.video-carousel-stage');
+
+			if (stage && activeSlide instanceof HTMLElement) {
+				stage.style.setProperty('--active-video-ratio', activeSlide.dataset.videoRatio || '16 / 9');
+				stage.classList.toggle('is-square', activeSlide.dataset.videoRatio === '700 / 700');
+			}
+
+			slides.forEach((slide, index) => {
+				const isActive = index === activeIndex;
+				slide.classList.toggle('is-active', isActive);
+				slide.setAttribute('aria-hidden', String(!isActive));
+
+				slide.querySelectorAll('video').forEach((video) => {
+					if (isActive) {
+						video.play().catch(() => {});
+					} else {
+						video.pause();
+						video.currentTime = 0;
+					}
+				});
+			});
+
+			dots.forEach((dot, index) => {
+				dot.classList.toggle('is-active', index === activeIndex);
+				dot.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
+			});
+		};
+
+		const startTimer = () => {
+			window.clearInterval(timer);
+			timer = window.setInterval(() => setActiveSlide(activeIndex + 1), 6000);
+		};
+
+		previousButton?.addEventListener('click', () => {
+			setActiveSlide(activeIndex - 1);
+			startTimer();
+		});
+
+		nextButton?.addEventListener('click', () => {
+			setActiveSlide(activeIndex + 1);
+			startTimer();
+		});
+
+		dots.forEach((dot, index) => {
+			dot.addEventListener('click', () => {
+				setActiveSlide(index);
+				startTimer();
+			});
+		});
+
+		carousel.addEventListener('mouseenter', () => window.clearInterval(timer));
+		carousel.addEventListener('mouseleave', startTimer);
+		carousel.addEventListener('focusin', () => window.clearInterval(timer));
+		carousel.addEventListener('focusout', startTimer);
+
+		setActiveSlide(0);
+		startTimer();
+	});
+</script>
 
 <style>
 	.media-section {
@@ -230,7 +333,7 @@ const videoAssets = [
 	.desktop-banner-showcase {
 		margin: 0;
 		overflow: hidden;
-		border-radius: 24px;
+		border-radius: 0;
 	}
 
 	.desktop-banner-showcase img {
@@ -273,35 +376,114 @@ const videoAssets = [
 		margin: 10px 0 0;
 	}
 
-	.video-grid {
+	.video-carousel {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 24px;
-		align-items: stretch;
+		gap: 16px;
+		max-width: 880px;
+		margin: 0 auto;
+		padding: 0 16px;
 	}
 
-	.video-card {
+	.video-carousel-stage {
+		position: relative;
+		width: 100%;
+		max-width: 880px;
+		margin: 0 auto;
+		aspect-ratio: var(--active-video-ratio, 16 / 9);
+		overflow: hidden;
+		border-radius: 18px;
+		background: #f4f1ed;
+		box-shadow: 0 16px 34px rgba(28, 21, 12, 0.07);
+		transition: max-width 0.35s ease, aspect-ratio 0.35s ease;
+	}
+
+	.video-carousel-stage.is-square {
+		max-width: min(560px, 100%);
+	}
+
+	.video-slide {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.45s ease;
+	}
+
+	.video-slide.is-active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.video-main-wrap {
+		position: absolute;
+		inset: 0;
 		display: grid;
-		grid-template-rows: auto 1fr;
+		place-items: center;
+		padding: 0;
+		background: transparent;
 	}
 
-	.video-frame {
-		padding: 16px 16px 0;
-	}
-
-	.video-frame video {
+	.video-main {
 		display: block;
 		width: 100%;
-		aspect-ratio: 16 / 9;
-		height: auto;
-		border-radius: 22px;
-		background: #151519;
+		height: 100%;
 		object-fit: contain;
+		border-radius: inherit;
+	}
+
+	.video-carousel-controls {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+	}
+
+	.video-carousel-button {
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		border: 1px solid rgba(162, 135, 87, 0.16);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.72);
+		color: var(--text);
+		font-size: 0.9rem;
+		font-weight: 800;
+		line-height: 1;
+		cursor: pointer;
+		box-shadow: 0 8px 18px rgba(28, 21, 12, 0.05);
+		transition: transform 0.2s ease, background-color 0.2s ease;
+	}
+
+	.video-carousel-button:hover {
+		transform: translateY(-1px);
+		background: rgba(255, 255, 255, 0.94);
+	}
+
+	.video-carousel-dots {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.video-carousel-dot {
+		width: 8px;
+		height: 8px;
+		padding: 0;
+		border: 0;
+		border-radius: 999px;
+		background: rgba(162, 135, 87, 0.28);
+		cursor: pointer;
+		transition: width 0.2s ease, background-color 0.2s ease;
+	}
+
+	.video-carousel-dot.is-active {
+		width: 22px;
+		background: var(--accent-deep);
 	}
 
 	@media (max-width: 980px) {
-		.flyer-grid,
-		.video-grid {
+		.flyer-grid {
 			grid-template-columns: 1fr;
 		}
 	}
@@ -375,8 +557,16 @@ const videoAssets = [
 			height: auto;
 		}
 
-		.video-frame {
-			padding: 12px 12px 0;
+		.video-carousel {
+			padding: 0;
+		}
+
+		.video-carousel-stage {
+			border-radius: 16px;
+		}
+
+		.video-main {
+			border-radius: inherit;
 		}
 
 	}
