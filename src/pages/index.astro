@@ -4,16 +4,37 @@ import Layout from '../layouts/Layout.astro';
 
 const capabilityGroups = [
 	{
-		title: 'Desarrollo web',
-		items: ['HTML5', 'CSS', 'JavaScript', 'PHP', 'SQL', 'C#', 'PrestaShop']
+		title: 'Desarrollo y tecnologías',
+		items: ['PHP', 'Java', 'JavaScript', 'C#', 'HTML5', 'CSS3', 'Node.js', 'Spring Boot']
+	},
+	{
+		title: 'Bases de datos y herramientas',
+		items: ['MySQL', 'MariaDB', 'SQL', 'Git', 'Docker', 'XAMPP', 'PrestaShop']
 	},
 	{
 		title: 'Marketing digital',
-		items: ['SEO', 'SEM', 'Google Ads', 'Google Analytics']
+		items: ['SEO', 'SEM', 'Google Ads', 'GA4', 'Analítica web', 'Gestión de contenidos']
 	},
 	{
-		title: 'Diseño y audiovisual',
-		items: ['Adobe Photoshop, After Effects y Premiere', 'Canva', 'Probance']
+		title: 'Diseño y comunicación',
+		items: ['Branding', 'Diseño publicitario', 'Canva', 'Photoshop', 'After Effects', 'Premiere', 'Probance']
+	},
+	{
+		title: 'Certificaciones',
+		items: [
+			'Certificación de Google Analytics',
+			'Google Ads Measurement Certification',
+			'Hacking web y ethical hacking'
+		]
+	},
+	{
+		title: 'Idiomas',
+		items: [
+			'Inglés · B2',
+			'Portugués · B1',
+			'Castellano · Nativo',
+			'Gallego · Nativo'
+		]
 	}
 ];
 
@@ -21,10 +42,11 @@ const featuredProjects = [
 	{
 		title: 'Audiovisual para landing Venditalia 2026',
 		type: 'Evento B2B',
-		status: 'Vídeo',
+		status: 'Publicado',
 		summary:
 			'Idea, diseño y montaje de todo el contenido audiovisual.',
-		video: '/imx/Video_Italia_Final_web.mp4'
+		video: '/imx/Video_Italia_Final_web.mp4',
+		image: '/imx/Venditalia-2026_800x800.jpg'
 	},
 	{
 		title: 'Alma Matter',
@@ -41,9 +63,9 @@ const featuredProjects = [
 		type: 'Presentación profesional',
 		status: 'Actual',
 		summary:
-			'Este sitio es un ejemplo de cómo presento mis capacidades: diseño, copy y desarrollo web integrados.',
+			'Este sitio es un ejemplo de cómo presento mis capacidades: diseño, estilo y desarrollo web integrados.',
 		tools: ['Astro', 'HTML', 'CSS', 'Experiencia UX'],
-		image: '/imx/NANA_NAILS.png'
+		image: ''
 	},
 	{
 		title: 'Web De Ninghures',
@@ -75,7 +97,7 @@ const featuredProjects = [
 		<main>
 			<section class="hero section">
 				<p class="eyebrow">Diseño, desarrollo y marketing digital</p>
-				<h1>Diseño y desarrollo web para marcas que quieren posicionarse y vender mejor.</h1>
+				<h1>Diseño y desarrollo web para marcas y empresas que quieren posicionarse y vender mejor.</h1>
 				<p class="hero-copy">
 					Ofrezco mi experiencia para una estrategia clara, identidad visual definida y desarrollo full stack para hacerlo todo posible.
 				</p>
@@ -86,11 +108,11 @@ const featuredProjects = [
 
 			<section class="section capabilities-band">
 				<div class="capabilities-intro">
-					<p class="section-kicker">Aptitudes</p>
-					<h2>Mi especialidad es unir desarrollo, marketing y diseño dentro de una misma web.</h2>
+					<p class="section-kicker">Conocimientos y habilidades</p>
+					<h2>Un perfil multidisciplinar para crear, comunicar y hacer crecer proyectos digitales.</h2>
 					<p>
-						Hago que cada parte del proyecto funcione en conjunto: estructura, tecnología,
-						comunicación visual y herramientas de captación.
+						Combino desarrollo, marketing y diseño para abordar cada proyecto con una visión
+						completa, desde la parte técnica hasta la captación de clientes.
 					</p>
 				</div>
 
@@ -98,9 +120,9 @@ const featuredProjects = [
 					{capabilityGroups.map((group) => (
 						<article class="capability-card">
 							<h3>{group.title}</h3>
-							<p class="capability-tools">
-								<span>Herramientas:</span> {group.items.join(', ')}
-							</p>
+							<ul class="capability-list">
+								{group.items.map((item) => <li>{item}</li>)}
+							</ul>
 						</article>
 					))}
 				</div>
@@ -115,7 +137,30 @@ const featuredProjects = [
 			<div class="projects-grid">
 				{featuredProjects.map((project, index) => (
 					<article class="project-card">
-						{project.url ? (
+						{project.video ? (
+							<>
+								<button
+									class="project-visual project-video-trigger"
+									type="button"
+									data-video-open={`project-video-${index}`}
+									aria-label={`Reproducir vídeo de ${project.title}`}
+								>
+									<img src={project.image} alt="" loading="lazy" decoding="async" />
+									<span class="project-play" aria-hidden="true">
+										<svg viewBox="0 0 24 24">
+											<path d="M8.5 6.2v11.6L18 12 8.5 6.2Z" />
+										</svg>
+									</span>
+								</button>
+								<dialog class="project-video-dialog" id={`project-video-${index}`}>
+									<button class="project-video-close" type="button" aria-label="Cerrar vídeo">×</button>
+									<video controls playsinline preload="metadata" poster={project.image}>
+										<source src={project.video} type="video/mp4" />
+										Tu navegador no puede reproducir este vídeo.
+									</video>
+								</dialog>
+							</>
+						) : project.url ? (
 							<a
 								class="project-visual project-visual-link"
 								href={project.url}
@@ -126,71 +171,44 @@ const featuredProjects = [
 								{project.image ? (
 									<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
 								) : (
-									<span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+									<span>{String(index + 1).padStart(2, '0')}</span>
 								)}
 							</a>
 						) : (
-							project.video ? (
-								<>
-									<button
-										class="project-visual project-video-preview"
-										type="button"
-										data-video-target={`project-video-${index}`}
-										aria-label={`Reproducir video de ${project.title}`}
-									>
-										<video muted playsinline preload="metadata">
-											<source src={project.video} type="video/mp4" />
-											Tu navegador no puede reproducir este vídeo.
-										</video>
-										<span class="project-video-play">Ver video</span>
-									</button>
-									<div class="project-visual project-video-mobile">
-										<video controls playsinline preload="metadata">
-											<source src={project.video} type="video/mp4" />
-											Tu navegador no puede reproducir este vídeo.
-										</video>
-									</div>
-								</>
-							) : (
 							<div class="project-visual">
-								{project.video === '' ? null : project.image ? (
+								{project.image ? (
 									<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
 								) : (
-									<span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+									<span>{String(index + 1).padStart(2, '0')}</span>
 								)}
 							</div>
-							)
 						)}
 						<div class="project-content">
 							<div class="project-meta">
 								<p class="project-category">{project.type}</p>
 								<p class="project-status">{project.status}</p>
 							</div>
-							{project.video ? (
-								<button
-									class="project-video-trigger"
-									type="button"
-									data-video-target={`project-video-${index}`}
-								>
-									<span class="project-video-title">{project.title}</span>
-									<span class="project-video-summary">{project.summary}</span>
-								</button>
-							) : (
-								<>
-									<h4>
-										{project.url ? (
-											<a href={project.url} target="_blank" rel="noreferrer">{project.title}</a>
-										) : (
-											project.title
-										)}
-									</h4>
-									<p>{project.summary}</p>
-								</>
-							)}
+							<h4>
+								{project.url ? (
+									<a href={project.url} target="_blank" rel="noreferrer">{project.title}</a>
+								) : (
+									project.title
+								)}
+							</h4>
+							<p>{project.summary}</p>
 							{project.tools && (
 								<div class="project-tools" aria-label="Herramientas usadas">
 									{project.tools.map((tool) => <span>{tool}</span>)}
 								</div>
+							)}
+							{project.video && (
+								<button
+									class="project-link project-video-link"
+									type="button"
+									data-video-open={`project-video-${index}`}
+								>
+									Reproducir vídeo
+								</button>
 							)}
 							{project.url && (
 								<a class="project-link" href={project.url} target="_blank" rel="noreferrer">
@@ -201,20 +219,6 @@ const featuredProjects = [
 					</article>
 				))}
 			</div>
-
-			{featuredProjects.map((project, index) => project.video && (
-					<dialog class="video-dialog" id={`project-video-${index}`} aria-label={`Video de ${project.title}`}>
-						<div class="video-dialog-panel">
-							<button class="video-dialog-close" type="button" aria-label="Cerrar video" data-video-close>
-								Cerrar
-							</button>
-							<video controls playsinline preload="metadata">
-								<source src={project.video} type="video/mp4" />
-								Tu navegador no puede reproducir este vídeo.
-							</video>
-						</div>
-					</dialog>
-				))}
 		</section>
 
 		<DesignUploader />
@@ -256,38 +260,32 @@ const featuredProjects = [
 </Layout>
 
 <script>
-	const videoTriggers = document.querySelectorAll('[data-video-target]');
-
-	videoTriggers.forEach((trigger) => {
+	document.querySelectorAll('[data-video-open]').forEach((trigger) => {
 		trigger.addEventListener('click', () => {
-			const dialogId = trigger.getAttribute('data-video-target');
+			const dialogId = trigger.getAttribute('data-video-open');
 			const dialog = dialogId ? document.getElementById(dialogId) : null;
 
 			if (dialog instanceof HTMLDialogElement) {
 				dialog.showModal();
-				dialog.querySelector('video')?.play();
+				dialog.querySelector('video')?.play().catch(() => {});
 			}
 		});
 	});
 
-	document.querySelectorAll('.video-dialog').forEach((dialog) => {
+	document.querySelectorAll('.project-video-dialog').forEach((dialog) => {
+		if (!(dialog instanceof HTMLDialogElement)) return;
+
 		const video = dialog.querySelector('video');
+		const closeButton = dialog.querySelector('.project-video-close');
+		const closeVideo = () => dialog.close();
 
+		closeButton?.addEventListener('click', closeVideo);
 		dialog.addEventListener('click', (event) => {
-			if (event.target === dialog && dialog instanceof HTMLDialogElement) {
-				dialog.close();
-			}
+			if (event.target === dialog) closeVideo();
 		});
-
-		dialog.querySelector('[data-video-close]')?.addEventListener('click', () => {
-			if (dialog instanceof HTMLDialogElement) {
-				dialog.close();
-			}
-		});
-
 		dialog.addEventListener('close', () => {
-			video?.pause();
 			if (video) {
+				video.pause();
 				video.currentTime = 0;
 			}
 		});
@@ -376,17 +374,19 @@ const featuredProjects = [
 	}
 
 	.eyebrow {
-		margin: 0 0 14px;
+		margin: 0 0 22px;
 		display: inline-block;
-		padding: 10px 16px;
+		padding: 12px 22px;
 		border-radius: 999px;
-		background: rgba(162, 135, 87, 0.1);
+		background: linear-gradient(100deg, #1f302b 0%, #466258 100%);
+		border: 1px solid rgba(255, 255, 255, 0.24);
+		box-shadow: 0 10px 26px rgba(31, 48, 43, 0.24);
 		font-family: var(--font-sans);
-		font-size: 0.82rem;
-		font-weight: 700;
-		letter-spacing: 0.18em;
+		font-size: clamp(0.84rem, 1.5vw, 0.96rem);
+		font-weight: 800;
+		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: #4f4941;
+		color: #ffffff;
 	}
 
 	.section-kicker {
@@ -477,8 +477,9 @@ const featuredProjects = [
 	}
 
 	.button-primary {
-		background: linear-gradient(90deg, #6a3cfd 0%, #2d9cdb 100%);
+		background: linear-gradient(90deg, #1f302b 0%, #466258 100%);
 		color: #ffffff;
+		box-shadow: 0 10px 22px rgba(31, 48, 43, 0.2);
 	}
 
 	.button-secondary {
@@ -500,7 +501,7 @@ const featuredProjects = [
 	}
 
 	.projects-heading {
-		max-width: 52ch;
+		max-width: none;
 		margin-bottom: 28px;
 	}
 
@@ -524,24 +525,21 @@ const featuredProjects = [
 		display: grid;
 		place-items: center;
 		min-height: 156px;
-		border: 0;
 		border-radius: 18px;
 		overflow: hidden;
 		background:
-			linear-gradient(135deg, rgba(106, 60, 253, 0.12), rgba(45, 156, 219, 0.12)),
+			linear-gradient(135deg, rgba(123, 99, 57, 0.16), rgba(162, 135, 87, 0.1)),
 			rgba(255, 250, 243, 0.8);
 		color: var(--accent-deep);
 		text-decoration: none;
 		transition: transform 0.22s ease, box-shadow 0.22s ease;
 	}
 
-	.project-visual-link,
-	.project-video-preview {
+	.project-visual-link {
 		cursor: pointer;
 	}
 
-	.project-visual-link:hover,
-	.project-video-preview:hover {
+	.project-visual-link:hover {
 		transform: translateY(-4px) scale(1.04);
 		box-shadow: 0 20px 42px rgba(28, 21, 12, 0.16);
 	}
@@ -552,51 +550,80 @@ const featuredProjects = [
 		object-fit: cover;
 	}
 
-	.project-visual video {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-	}
-
-	.project-video-preview {
+	.project-video-trigger {
 		position: relative;
 		width: 100%;
 		padding: 0;
+		border: 0;
+		cursor: pointer;
 	}
 
-	.project-video-preview video {
-		filter: brightness(0.72);
-	}
-
-	.project-video-play {
+	.project-play {
 		position: absolute;
-		left: 10px;
-		bottom: 10px;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: fit-content;
-		min-height: 20px;
-		padding: 3px 7px;
-		border-radius: 999px;
-		background: rgba(255, 252, 247, 0.88);
-		border: 1px solid rgba(255, 255, 255, 0.44);
-		box-shadow: 0 5px 12px rgba(20, 19, 22, 0.12);
-		font-family: var(--font-sans);
-		font-size: 0.58rem;
-		font-weight: 800;
-		letter-spacing: 0.02em;
-		line-height: 1.05;
-		text-transform: uppercase;
-		color: var(--text);
+		inset: 50% auto auto 50%;
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		padding: 0;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		background: rgba(31, 48, 43, 0.92);
+		box-shadow: 0 10px 28px rgba(20, 19, 22, 0.3);
+		color: #fff;
+	}
+
+	.project-play svg {
+		display: block;
+		width: 23px;
+		height: 23px;
+		fill: currentColor;
+	}
+
+	.project-video-dialog {
+		width: min(94vw, 1200px);
+		max-width: none;
+		padding: 0;
+		border: 0;
+		border-radius: 20px;
+		overflow: visible;
+		background: #111;
+		box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+	}
+
+	.project-video-dialog::backdrop {
+		background: rgba(15, 14, 13, 0.86);
 		backdrop-filter: blur(8px);
 	}
 
-	.project-video-mobile {
-		display: none;
+	.project-video-dialog video {
+		display: block;
+		width: 100%;
+		max-height: 88vh;
+		border-radius: 20px;
+		object-fit: contain;
 	}
 
-	.project-number {
+	.project-video-close {
+		position: absolute;
+		top: -18px;
+		right: -18px;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		width: 42px;
+		height: 42px;
+		padding: 0;
+		border: 2px solid rgba(255, 255, 255, 0.7);
+		border-radius: 50%;
+		background: #1f302b;
+		font-size: 1.7rem;
+		line-height: 1;
+		color: #fff;
+		cursor: pointer;
+	}
+
+	.project-visual span {
 		font-family: var(--font-display);
 		font-size: 2.5rem;
 		font-weight: 600;
@@ -621,37 +648,6 @@ const featuredProjects = [
 	.project-card h4 {
 		font-size: 1.25rem;
 		margin: 0;
-	}
-
-	.project-video-trigger {
-		display: grid;
-		gap: 8px;
-		width: 100%;
-		padding: 0;
-		border: 0;
-		background: transparent;
-		text-align: left;
-		cursor: pointer;
-	}
-
-	.project-video-title {
-		font-family: var(--font-display);
-		font-size: 1.25rem;
-		font-weight: 600;
-		line-height: 1.18;
-		letter-spacing: -0.02em;
-		color: var(--text);
-		transition: color 0.2s ease;
-	}
-
-	.project-video-summary {
-		font: inherit;
-		line-height: 1.82;
-		color: var(--muted);
-	}
-
-	.project-video-trigger:hover .project-video-title {
-		color: var(--accent-deep);
 	}
 
 	.project-card h4 a {
@@ -716,51 +712,13 @@ const featuredProjects = [
 		border-bottom-color: rgba(20, 19, 22, 0.34);
 	}
 
-	.video-dialog {
-		width: min(1080px, calc(100vw - 96px));
-		padding: 0;
+	.project-video-link {
+		padding: 0 0 3px;
 		border: 0;
-		border-radius: 22px;
+		border-bottom: 1px solid rgba(123, 99, 57, 0.32);
 		background: transparent;
-		color: inherit;
-	}
-
-	.video-dialog::backdrop {
-		background: rgba(24, 24, 28, 0.68);
-		backdrop-filter: blur(3px);
-	}
-
-	.video-dialog-panel {
-		display: grid;
-		gap: 12px;
-		padding: 14px;
-		background: rgba(255, 252, 247, 0.96);
-		border: 1px solid rgba(255, 255, 255, 0.54);
-		border-radius: 22px;
-		box-shadow: 0 24px 70px rgba(20, 19, 22, 0.32);
-	}
-
-	.video-dialog-panel video {
-		display: block;
-		width: 100%;
-		max-height: min(76vh, 720px);
-		border-radius: 14px;
-		background: #141316;
-	}
-
-	.video-dialog-close {
-		justify-self: end;
-		padding: 10px 14px;
-		border: 1px solid rgba(162, 135, 87, 0.18);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.78);
-		color: var(--text);
-		font-weight: 800;
+		font-family: inherit;
 		cursor: pointer;
-	}
-
-	.video-dialog-close:hover {
-		background: rgba(255, 255, 255, 0.96);
 	}
 
 	@media (max-width: 980px) {
@@ -776,18 +734,6 @@ const featuredProjects = [
 
 		.project-visual {
 			min-height: 132px;
-		}
-
-		.project-video-preview {
-			display: none;
-		}
-
-		.project-video-mobile {
-			display: grid;
-		}
-
-		.video-dialog {
-			width: min(920px, calc(100vw - 32px));
 		}
 	}
 
@@ -809,7 +755,7 @@ const featuredProjects = [
 	}
 
 	.capabilities-intro {
-		max-width: 68ch;
+		max-width: none;
 	}
 
 	.capabilities-intro h2 {
@@ -834,7 +780,7 @@ const featuredProjects = [
 
 	.capability-card h3 {
 		font-size: 1.34rem;
-		margin-bottom: 10px;
+		margin-bottom: 18px;
 	}
 
 	.capability-card p {
@@ -842,16 +788,25 @@ const featuredProjects = [
 		line-height: 1.7;
 	}
 
-	.capability-tools {
-		margin-bottom: 0;
-		font-size: 0.95rem;
-		line-height: 1.65;
-		color: var(--text);
+	.capability-list {
+		display: flex;
+		flex-wrap: wrap;
+		align-content: flex-start;
+		gap: 9px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
 	}
 
-	.capability-tools span {
-		font-weight: 800;
-		color: var(--accent-deep);
+	.capability-list li {
+		padding: 7px 11px;
+		border: 1px solid rgba(123, 99, 57, 0.18);
+		border-radius: 999px;
+		background: linear-gradient(135deg, rgba(162, 135, 87, 0.12), rgba(235, 224, 200, 0.38));
+		font-size: 0.86rem;
+		font-weight: 700;
+		line-height: 1.25;
+		color: var(--text);
 	}
 
 	.contact-band {
@@ -969,7 +924,10 @@ const featuredProjects = [
 		box-shadow: 0 14px 32px rgba(28, 21, 12, 0.08);
 	}
 
-	.capabilities-band h2,
+	.capabilities-band h2 {
+		max-width: none;
+	}
+
 	.contact-band h2 {
 		max-width: 14ch;
 	}
