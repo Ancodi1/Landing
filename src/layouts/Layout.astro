@@ -2,12 +2,21 @@
 interface Props {
 	title?: string;
 	description?: string;
+	author?: string;
+	ogImage?: string;
 }
 
 const {
 	title = 'Portfolio | Marketing, diseño y desarrollo web',
-	description = 'Landing personal para mostrar estrategia de marketing, criterio visual y desarrollo web.'
+	description = 'Landing personal para mostrar estrategia de marketing, criterio visual y desarrollo web.',
+	author = 'Ángel Collazo Díaz',
+	ogImage = 'imx/Venditalia-2026_800x800.jpg'
 } = Astro.props;
+
+const siteUrl = new URL('https://ancodi1.github.io/Landing/');
+const pagePath = Astro.url.pathname === '/' ? '' : Astro.url.pathname.replace(/^\/+/, '');
+const canonicalUrl = new URL(pagePath, siteUrl);
+const socialImageUrl = new URL(ogImage.replace(/^\/+/, ''), siteUrl);
 ---
 
 <!doctype html>
@@ -15,7 +24,15 @@ const {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="author" content={author} />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#f5efe5" />
+		<meta name="color-scheme" content="light" />
+
+		<link rel="canonical" href={canonicalUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -23,8 +40,21 @@ const {
 			rel="stylesheet"
 		/>
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<meta name="theme-color" content="#f5efe5" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content="Portfolio de Ángel Collazo Díaz" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={socialImageUrl} />
+		<meta property="og:image:alt" content="Portfolio de Ángel Collazo Díaz" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={socialImageUrl} />
+		<meta name="twitter:image:alt" content="Portfolio de Ángel Collazo Díaz" />
 		<title>{title}</title>
 	</head>
 	<body>

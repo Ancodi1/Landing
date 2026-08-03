@@ -45,6 +45,8 @@ const featuredProjects = [
 		status: 'Publicado',
 		summary:
 			'Idea, diseño y montaje de todo el contenido audiovisual.',
+		result:
+			'El audiovisual se diseñó como una pieza central del stand para captar la atención en un entorno de gran afluencia y comunicar de forma inmediata la capacidad operativa de la empresa y el alcance de sus servicios. Se proyectó en bucle durante varias horas en pantallas de gran formato, consiguiendo visibilidad ante miles de asistentes.',
 		video: '/imx/Video_Italia_Final_web.mp4',
 		image: '/imx/Venditalia-2026_800x800.jpg'
 	},
@@ -53,8 +55,10 @@ const featuredProjects = [
 		type: 'Web para gestión total de clases y alumnos',
 		status: 'Portfolio',
 		summary:
-			'Proyecto diseñado para la gestión de clases y alumnos desde una única plataforma.',
-		tools: ['PHP', 'SQL', 'HTML', 'CSS', 'JavaScript'],
+			'Proyecto personal full stack para gestionar alumnos, asignaturas y exámenes en entidades que imparten cursos o clases online.',
+		result:
+			'Aplicación funcional y responsive con CRUD, búsqueda, paginación, validaciones y seguridad web. Complejidad media-alta.',
+		tools: ['PHP', 'MySQL', 'JavaScript', 'CSS', 'Arquitectura MVC'],
 		url: 'https://github.com/Ancodi1/Academia-Alma-Matter-Ancodi',
 		image: '/imx/logo.png'
 	},
@@ -103,6 +107,14 @@ const featuredProjects = [
 				</p>
 				<div class="hero-actions">
 					<a class="button-primary" href="#proyectos">Ver proyectos</a>
+					<a class="button-secondary" href="#contacto">Contactar conmigo</a>
+					<a
+						class="button-secondary"
+						href="/Angel-Collazo-Diaz-CV.pdf"
+						download="CV-Angel-Collazo-Diaz.pdf"
+					>
+						Descargar CV
+					</a>
 				</div>
 			</section>
 
@@ -196,6 +208,7 @@ const featuredProjects = [
 								)}
 							</h4>
 							<p>{project.summary}</p>
+							{project.result && <p class="project-result">{project.result}</p>}
 							{project.tools && (
 								<div class="project-tools" aria-label="Herramientas usadas">
 									{project.tools.map((tool) => <span>{tool}</span>)}
@@ -233,6 +246,20 @@ const featuredProjects = [
 					<div class="contact-card">
 						<p class="contact-name">Ángel Collazo Díaz</p>
 						<p class="contact-role">Disponible para proyectos freelance</p>
+						<p class="contact-email-context">
+							Para propuestas de trabajo, colaboraciones o cualquier consulta, puedes escribirme
+							directamente a:
+						</p>
+						<a class="contact-email" href="mailto:angel.97.cd@gmail.com">
+							angel.97.cd@gmail.com
+						</a>
+						<a
+							class="contact-cv"
+							href="/Angel-Collazo-Diaz-CV.pdf"
+							download="CV-Angel-Collazo-Diaz.pdf"
+						>
+							Descargar currículum
+						</a>
 						<a
 							class="linkedin-card"
 							href="https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/"
@@ -507,13 +534,14 @@ const featuredProjects = [
 
 	.projects-grid {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: minmax(0, 1fr);
 		gap: 22px;
 	}
 
 	.project-card {
 		display: grid;
 		grid-template-columns: 156px minmax(0, 1fr);
+		align-items: start;
 		gap: 20px;
 		padding: 18px;
 		border-radius: 24px;
@@ -525,6 +553,7 @@ const featuredProjects = [
 		display: grid;
 		place-items: center;
 		min-height: 156px;
+		aspect-ratio: 1;
 		border-radius: 18px;
 		overflow: hidden;
 		background:
@@ -637,6 +666,13 @@ const featuredProjects = [
 		min-width: 0;
 	}
 
+	.project-result {
+		padding-left: 12px;
+		border-left: 2px solid rgba(104, 79, 41, 0.35);
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
 	.project-meta {
 		display: flex;
 		flex-wrap: wrap;
@@ -734,6 +770,7 @@ const featuredProjects = [
 
 		.project-visual {
 			min-height: 132px;
+			aspect-ratio: 16 / 9;
 		}
 	}
 
@@ -846,6 +883,13 @@ const featuredProjects = [
 		color: var(--muted);
 	}
 
+	.contact-email-context {
+		max-width: 56ch;
+		margin-top: 8px;
+		font-size: 0.95rem;
+		line-height: 1.65;
+	}
+
 	.contact-email {
 		width: fit-content;
 		font-size: 1rem;
@@ -859,6 +903,26 @@ const featuredProjects = [
 	.contact-email:hover {
 		color: var(--accent-deep);
 		border-bottom-color: rgba(123, 99, 57, 0.4);
+	}
+
+	.contact-cv {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: fit-content;
+		padding: 11px 17px;
+		border-radius: 999px;
+		background: #1f302b;
+		font-size: 0.9rem;
+		font-weight: 800;
+		color: #fff;
+		text-decoration: none;
+		transition: transform 0.2s ease, background-color 0.2s ease;
+	}
+
+	.contact-cv:hover {
+		transform: translateY(-1px);
+		background: #354d45;
 	}
 
 	.linkedin-card {
