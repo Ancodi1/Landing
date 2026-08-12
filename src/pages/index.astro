@@ -1,6 +1,7 @@
 ---
 import DesignUploader from '../components/DesignUploader.astro';
 import Layout from '../layouts/Layout.astro';
+import logoOmeya from '../imx/logoomeya.png';
 
 const capabilityGroups = [
 	{
@@ -66,12 +67,15 @@ const featuredProjects = [
 		image: '/imx/logo.png'
 	},
 	{
-		title: 'Web Nana Nails',
-		type: 'Presentación profesional',
+		title: 'Nana Nails',
+		type: 'Web para negocio local',
 		status: '',
+		highlight: 'Presencia digital orientada a captar nuevos clientes',
 		summary:
-			'Este sitio es un ejemplo de cómo presento mis capacidades: diseño, estilo y desarrollo web integrados.',
-		tools: ['Astro', 'HTML', 'CSS', 'Experiencia UX'],
+			'Diseño y desarrollo web para Nana Nails, creado para representar la identidad del negocio, presentar sus servicios de forma atractiva y mejorar su visibilidad en las búsquedas locales.',
+		result:
+			'Una web profesional, responsive y optimizada para facilitar que potenciales clientes encuentren el negocio, conozcan sus servicios y contacten con mayor facilidad.',
+		tools: ['Astro', 'Diseño web', 'SEO local', 'Experiencia de usuario', 'Diseño responsive'],
 		image: ''
 	},
 	{
@@ -81,7 +85,7 @@ const featuredProjects = [
 		summary:
 			'Proyecto web para Guardia Omeya, un clan de Mount & Blade II: Bannerlord, pensado como espacio de presentación, comunidad e identidad del grupo.',
 		tools: ['Diseño web', 'Desarrollo', 'Experiencia UX'],
-		image: ''
+		image: logoOmeya.src
 	},
 	{
 		title: 'Coronas Ibéricas',
