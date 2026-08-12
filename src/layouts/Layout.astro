@@ -4,19 +4,64 @@ interface Props {
 	description?: string;
 	author?: string;
 	ogImage?: string;
+	robots?: string;
 }
 
 const {
 	title = 'Portfolio | Marketing, diseño y desarrollo web',
 	description = 'Landing personal para mostrar estrategia de marketing, criterio visual y desarrollo web.',
 	author = 'Ángel Collazo Díaz',
-	ogImage = 'imx/Venditalia-2026_800x800.jpg'
+	ogImage = 'imx/Venditalia-2026_800x800.jpg',
+	robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 } = Astro.props;
 
-const siteUrl = new URL('https://ancodi1.github.io/Landing/');
+const siteUrl = Astro.site ?? new URL('https://ancodi1.github.io/Landing/');
 const pagePath = Astro.url.pathname === '/' ? '' : Astro.url.pathname.replace(/^\/+/, '');
 const canonicalUrl = new URL(pagePath, siteUrl);
 const socialImageUrl = new URL(ogImage.replace(/^\/+/, ''), siteUrl);
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Person',
+			'@id': `${siteUrl.href}#person`,
+			name: 'Ángel Collazo Díaz',
+			url: siteUrl.href,
+			jobTitle: 'Desarrollador full stack freelance y especialista en marketing digital',
+			description:
+				'Desarrollador full stack freelance especializado en diseño web, SEO, SEM y marketing digital para empresas de Galicia y España.',
+			areaServed: [
+				{ '@type': 'AdministrativeArea', name: 'Galicia' },
+				{ '@type': 'Country', name: 'España' }
+			],
+			knowsAbout: [
+				'Desarrollo full stack',
+				'Desarrollo web',
+				'PHP',
+				'JavaScript',
+				'MySQL',
+				'SEO',
+				'SEM',
+				'Google Ads',
+				'Analítica web',
+				'Diseño web'
+			],
+			sameAs: [
+				'https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/',
+				'https://github.com/Ancodi1'
+			]
+		},
+		{
+			'@type': 'WebSite',
+			'@id': `${siteUrl.href}#website`,
+			url: siteUrl.href,
+			name: 'Ángel Collazo Díaz | Desarrollo web y marketing digital',
+			inLanguage: 'es-ES',
+			publisher: { '@id': `${siteUrl.href}#person` }
+		}
+	]
+};
 ---
 
 <!doctype html>
@@ -26,10 +71,15 @@ const socialImageUrl = new URL(ogImage.replace(/^\/+/, ''), siteUrl);
 		<meta name="viewport" content="width=device-width" />
 		<meta name="author" content={author} />
 		<meta name="description" content={description} />
+		<meta name="robots" content={robots} />
+		<meta name="geo.region" content="ES-GA" />
+		<meta name="geo.placename" content="Galicia, España" />
 		<meta name="theme-color" content="#f5efe5" />
 		<meta name="color-scheme" content="light" />
 
 		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="es-ES" href={canonicalUrl} />
+		<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="shortcut icon" href="/favicon.svg" />
 		<link rel="apple-touch-icon" href="/favicon.svg" />
@@ -55,6 +105,7 @@ const socialImageUrl = new URL(ogImage.replace(/^\/+/, ''), siteUrl);
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={socialImageUrl} />
 		<meta name="twitter:image:alt" content="Portfolio de Ángel Collazo Díaz" />
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 		<title>{title}</title>
 	</head>
 	<body>
