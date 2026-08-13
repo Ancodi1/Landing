@@ -92,10 +92,15 @@ const videoAssets = [
 								loop
 								disablepictureinpicture
 								controlslist="nofullscreen nodownload noplaybackrate noremoteplayback"
+								aria-label={asset.title}
 							>
-								<source src={asset.src} type={asset.type} />
+								<source data-src={asset.src} type={asset.type} />
 								Tu navegador no puede reproducir este video.
 							</video>
+							<button class="video-play-button" type="button" data-video-play>
+								<span class="video-play-icon" aria-hidden="true">▶</span>
+								<span>Reproducir {asset.title}</span>
+							</button>
 						</div>
 					</article>
 				))}
@@ -118,15 +123,6 @@ const videoAssets = [
 				</div>
 				<button class="video-carousel-button" type="button" data-video-carousel-next aria-label="Banner siguiente">
 					<span aria-hidden="true">&gt;</span>
-				</button>
-				<button
-					class="video-carousel-button video-carousel-toggle"
-					type="button"
-					data-video-carousel-toggle
-					aria-label="Pausar carrusel"
-					aria-pressed="false"
-				>
-					<span aria-hidden="true">II</span>
 				</button>
 			</div>
 		</div>
@@ -204,20 +200,7 @@ const videoAssets = [
 		const dots = Array.from(carousel.querySelectorAll('[data-video-carousel-dot]'));
 		const previousButton = carousel.querySelector('[data-video-carousel-prev]');
 		const nextButton = carousel.querySelector('[data-video-carousel-next]');
-		const toggleButton = carousel.querySelector('[data-video-carousel-toggle]');
-		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let activeIndex = 0;
-		let timer;
-		let isPaused = reducedMotion;
-		let isInViewport = false;
-
-		const updateToggleButton = () => {
-			if (!(toggleButton instanceof HTMLButtonElement)) return;
-			toggleButton.setAttribute('aria-pressed', String(isPaused));
-			toggleButton.setAttribute('aria-label', isPaused ? 'Reanudar carrusel' : 'Pausar carrusel');
-			const icon = toggleButton.querySelector('span');
-			if (icon) icon.textContent = isPaused ? '\u25b6' : 'II';
-		};
 
 		const setActiveSlide = (nextIndex) => {
 			activeIndex = (nextIndex + slides.length) % slides.length;
@@ -235,11 +218,8 @@ const videoAssets = [
 				slide.setAttribute('aria-hidden', String(!isActive));
 
 				slide.querySelectorAll('video').forEach((video) => {
-					if (isActive && !isPaused && isInViewport) {
-						video.play().catch(() => {});
-					} else {
+					if (!isActive) {
 						video.pause();
-						video.currentTime = 0;
 					}
 				});
 			});
@@ -250,63 +230,38 @@ const videoAssets = [
 			});
 		};
 
-		const startTimer = () => {
-			window.clearInterval(timer);
-			if (isPaused || !isInViewport) return;
-			timer = window.setInterval(() => setActiveSlide(activeIndex + 1), 6000);
-		};
-
 		previousButton?.addEventListener('click', () => {
 			setActiveSlide(activeIndex - 1);
-			startTimer();
 		});
 
 		nextButton?.addEventListener('click', () => {
 			setActiveSlide(activeIndex + 1);
-			startTimer();
 		});
 
 		dots.forEach((dot, index) => {
 			dot.addEventListener('click', () => {
 				setActiveSlide(index);
-				startTimer();
 			});
 		});
 
-		toggleButton?.addEventListener('click', () => {
-			isPaused = !isPaused;
-			setActiveSlide(activeIndex);
-			if (isPaused) {
-				window.clearInterval(timer);
-			} else {
-				startTimer();
-			}
-			updateToggleButton();
+		carousel.querySelectorAll('[data-video-play]').forEach((playButton) => {
+			playButton.addEventListener('click', () => {
+				const slide = playButton.closest('.video-slide');
+				const video = slide?.querySelector('video');
+				const source = video?.querySelector('source[data-src]');
+				if (!(video instanceof HTMLVideoElement) || !(source instanceof HTMLSourceElement)) return;
+
+				if (!source.src) {
+					source.src = source.dataset.src || '';
+					video.load();
+				}
+				video.controls = true;
+				video.play().catch(() => {});
+				playButton.remove();
+			});
 		});
 
-		carousel.addEventListener('mouseenter', () => window.clearInterval(timer));
-		carousel.addEventListener('mouseleave', startTimer);
-		carousel.addEventListener('focusin', () => window.clearInterval(timer));
-		carousel.addEventListener('focusout', startTimer);
-
-		updateToggleButton();
-
-		if ('IntersectionObserver' in window) {
-			const observer = new IntersectionObserver(
-				([entry]) => {
-					isInViewport = entry.isIntersecting;
-					setActiveSlide(activeIndex);
-					if (isInViewport) startTimer();
-					else window.clearInterval(timer);
-				},
-				{ rootMargin: '200px 0px', threshold: 0.01 }
-			);
-			observer.observe(carousel);
-		} else {
-			isInViewport = true;
-			setActiveSlide(0);
-			startTimer();
-		}
+		setActiveSlide(0);
 	});
 </script>
 
@@ -475,7 +430,9 @@ const videoAssets = [
 		display: grid;
 		place-items: center;
 		padding: 0;
-		background: transparent;
+		background:
+			radial-gradient(circle at 50% 35%, rgba(162, 135, 87, 0.2), transparent 38%),
+			linear-gradient(135deg, #f8f2e9, #e9dfd0);
 	}
 
 	.video-main {
@@ -484,6 +441,36 @@ const videoAssets = [
 		height: 100%;
 		object-fit: contain;
 		border-radius: inherit;
+	}
+
+	.video-play-button {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 14px;
+		padding: 24px;
+		border: 0;
+		background: transparent;
+		font: inherit;
+		font-weight: 800;
+		color: var(--text);
+		cursor: pointer;
+	}
+
+	.video-play-icon {
+		display: grid;
+		place-items: center;
+		width: 64px;
+		height: 64px;
+		padding-left: 4px;
+		border-radius: 50%;
+		background: #1f302b;
+		box-shadow: 0 12px 28px rgba(31, 48, 43, 0.22);
+		font-size: 1.35rem;
+		color: #fff;
 	}
 
 	.video-carousel-controls {
