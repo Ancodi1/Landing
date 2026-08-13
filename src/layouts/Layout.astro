@@ -17,7 +17,7 @@ const {
 
 const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
 const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
-const siteUrl = Astro.site ?? new URL('https://ancodi1.github.io');
+const siteUrl = Astro.site ?? new URL('https://www.angelcollazo.com');
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
 const homeUrl = new URL(basePath, siteUrl);
 const socialImageUrl = new URL(assetPath(ogImage), siteUrl);

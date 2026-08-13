@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = ({ site }) => {
 	const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
-	const siteUrl = site ?? new URL('https://ancodi1.github.io');
+	const siteUrl = site ?? new URL('https://www.angelcollazo.com');
 	const baseUrl = new URL(basePath, siteUrl);
 	const sitemapUrl = new URL('sitemap.xml', baseUrl);
 

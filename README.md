@@ -6,7 +6,7 @@ El sitio está desarrollado con Astro y prioriza el rendimiento, la adaptación 
 
 ## Vista online
 
-[ancodi1.github.io/Landing](https://ancodi1.github.io/Landing/)
+[www.angelcollazo.com](https://www.angelcollazo.com/)
 
 ## Características
 
@@ -49,7 +49,7 @@ Inicia el servidor de desarrollo:
 npm run dev
 ```
 
-La aplicación estará disponible, por defecto, en `http://localhost:4321/Landing/`.
+La aplicación estará disponible, por defecto, en `http://localhost:4321/`.
 
 ## Comandos disponibles
 
@@ -78,7 +78,7 @@ La aplicación estará disponible, por defecto, en `http://localhost:4321/Landin
 
 ## Configuración
 
-El dominio y la ruta base se configuran mediante `PUBLIC_SITE_URL` y `PUBLIC_BASE_PATH`. Si no se definen, el proyecto utiliza el dominio de GitHub Pages y la ruta `/Landing` incluidos en `astro.config.mjs`.
+El dominio y la ruta base se configuran mediante `PUBLIC_SITE_URL` y `PUBLIC_BASE_PATH`. Si no se definen, el proyecto utiliza `https://www.angelcollazo.com` y la ruta `/` incluidos en `astro.config.mjs`.
 
 Ejemplo para generar el sitio con otro dominio:
 
