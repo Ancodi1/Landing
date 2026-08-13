@@ -2,3 +2,11 @@
 dist/
 node_modules/
 public/imx/Video_Italia_Final.mp4
+
+# La salida principal ya está versionada para el despliegue.
+# Astro genera aquí el CSS y las imágenes procesadas.
+!dist/
+dist/*
+!dist/_astro/
+!dist/_astro/**
+!dist/.nojekyll
