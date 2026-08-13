@@ -15,19 +15,21 @@ const {
 	robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 } = Astro.props;
 
-const siteUrl = Astro.site ?? new URL('https://ancodi1.github.io/Landing/');
-const pagePath = Astro.url.pathname === '/' ? '' : Astro.url.pathname.replace(/^\/+/, '');
-const canonicalUrl = new URL(pagePath, siteUrl);
-const socialImageUrl = new URL(ogImage.replace(/^\/+/, ''), siteUrl);
+const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
+const siteUrl = Astro.site ?? new URL('https://ancodi1.github.io');
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
+const homeUrl = new URL(basePath, siteUrl);
+const socialImageUrl = new URL(assetPath(ogImage), siteUrl);
 
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@graph': [
 		{
 			'@type': 'Person',
-			'@id': `${siteUrl.href}#person`,
+			'@id': `${homeUrl.href}#person`,
 			name: 'Ángel Collazo Díaz',
-			url: siteUrl.href,
+			url: homeUrl.href,
 			jobTitle: 'Desarrollador full stack freelance y especialista en marketing digital',
 			description:
 				'Desarrollador full stack freelance especializado en diseño web, SEO, SEM y marketing digital para empresas de Galicia y España.',
@@ -54,11 +56,11 @@ const structuredData = {
 		},
 		{
 			'@type': 'WebSite',
-			'@id': `${siteUrl.href}#website`,
-			url: siteUrl.href,
+			'@id': `${homeUrl.href}#website`,
+			url: homeUrl.href,
 			name: 'Ángel Collazo Díaz | Desarrollo web y marketing digital',
 			inLanguage: 'es-ES',
-			publisher: { '@id': `${siteUrl.href}#person` }
+			publisher: { '@id': `${homeUrl.href}#person` }
 		}
 	]
 };
@@ -80,9 +82,9 @@ const structuredData = {
 		<link rel="canonical" href={canonicalUrl} />
 		<link rel="alternate" hreflang="es-ES" href={canonicalUrl} />
 		<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="shortcut icon" href="/favicon.svg" />
-		<link rel="apple-touch-icon" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={assetPath('favicon.svg')} />
+		<link rel="shortcut icon" href={assetPath('favicon.svg')} />
+		<link rel="apple-touch-icon" href={assetPath('favicon.svg')} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -176,5 +178,19 @@ const structuredData = {
 
 	a {
 		color: inherit;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
 	}
  </style>

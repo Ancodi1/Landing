@@ -1,14 +1,17 @@
 ---
+const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
+
 const flyerAssets = [
 	{
-		src: '/imx/flyer-a.png',
+		src: assetPath('imx/flyer-a.png'),
 		title: 'Flyer Venditalia 2026',
 		description: 'Flyer vertical completo para Venditalia 2026.',
 		width: 1181,
 		height: 2480
 	},
 	{
-		src: '/imx/flyer-b.png',
+		src: assetPath('imx/flyer-b.png'),
 		title: 'Flyer Venditalia 2026',
 		description: 'Segunda versión del flyer vertical para Venditalia 2026.',
 		width: 1181,
@@ -17,7 +20,7 @@ const flyerAssets = [
 ];
 
 const desktopBannerAsset = {
-	src: '/imx/MUESTRABANNERS.png?v=2',
+	src: `${assetPath('imx/MUESTRABANNERS.png')}?v=2`,
 	title: 'Muestra de banners promocionales',
 	width: 1920,
 	height: 1080
@@ -25,7 +28,7 @@ const desktopBannerAsset = {
 
 const mobileCategoryAssets = [
 	{
-		src: '/imx/banner-novedades-movil.png',
+		src: assetPath('imx/banner-novedades-movil.png'),
 		title: 'Banner móvil de novedades',
 		description:
 			'Pieza diseñada para captar atención en formato móvil con un mensaje directo y visual atractivo.',
@@ -33,7 +36,7 @@ const mobileCategoryAssets = [
 		height: 200
 	},
 	{
-		src: '/imx/bannermovil445x154.png',
+		src: assetPath('imx/bannermovil445x154.png'),
 		title: 'Banner móvil Haribo',
 		description: 'Banner compacto adaptado al espacio disponible en dispositivos móviles.',
 		width: 445,
@@ -43,7 +46,7 @@ const mobileCategoryAssets = [
 
 const videoAssets = [
 	{
-		src: '/imx/compres-prueba7-banner-pk.mp4',
+		src: assetPath('imx/compres-prueba7-banner-pk.mp4'),
 		title: 'CompresPrueba7BannerPK',
 		description: 'Nueva pieza de video integrada como primer banner audiovisual.',
 		type: 'video/mp4',
@@ -51,7 +54,7 @@ const videoAssets = [
 		height: 1080
 	},
 	{
-		src: '/imx/durex-fondo-solido.mp4',
+		src: assetPath('imx/durex-fondo-solido.mp4'),
 		title: 'Durex Fondo Solido',
 		description: 'Versión de video con fondo sólido integrada como segunda pieza.',
 		type: 'video/mp4',
@@ -83,7 +86,6 @@ const videoAssets = [
 								class="video-main"
 								playsinline
 								preload="metadata"
-								autoplay
 								muted
 								loop
 								disablepictureinpicture
@@ -114,6 +116,15 @@ const videoAssets = [
 				</div>
 				<button class="video-carousel-button" type="button" data-video-carousel-next aria-label="Banner siguiente">
 					<span aria-hidden="true">&gt;</span>
+				</button>
+				<button
+					class="video-carousel-button video-carousel-toggle"
+					type="button"
+					data-video-carousel-toggle
+					aria-label="Pausar carrusel"
+					aria-pressed="false"
+				>
+					<span aria-hidden="true">II</span>
 				</button>
 			</div>
 		</div>
@@ -191,8 +202,19 @@ const videoAssets = [
 		const dots = Array.from(carousel.querySelectorAll('[data-video-carousel-dot]'));
 		const previousButton = carousel.querySelector('[data-video-carousel-prev]');
 		const nextButton = carousel.querySelector('[data-video-carousel-next]');
+		const toggleButton = carousel.querySelector('[data-video-carousel-toggle]');
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let activeIndex = 0;
 		let timer;
+		let isPaused = reducedMotion;
+
+		const updateToggleButton = () => {
+			if (!(toggleButton instanceof HTMLButtonElement)) return;
+			toggleButton.setAttribute('aria-pressed', String(isPaused));
+			toggleButton.setAttribute('aria-label', isPaused ? 'Reanudar carrusel' : 'Pausar carrusel');
+			const icon = toggleButton.querySelector('span');
+			if (icon) icon.textContent = isPaused ? '\u25b6' : 'II';
+		};
 
 		const setActiveSlide = (nextIndex) => {
 			activeIndex = (nextIndex + slides.length) % slides.length;
@@ -210,7 +232,7 @@ const videoAssets = [
 				slide.setAttribute('aria-hidden', String(!isActive));
 
 				slide.querySelectorAll('video').forEach((video) => {
-					if (isActive) {
+					if (isActive && !isPaused) {
 						video.play().catch(() => {});
 					} else {
 						video.pause();
@@ -227,6 +249,7 @@ const videoAssets = [
 
 		const startTimer = () => {
 			window.clearInterval(timer);
+			if (isPaused) return;
 			timer = window.setInterval(() => setActiveSlide(activeIndex + 1), 6000);
 		};
 
@@ -247,12 +270,24 @@ const videoAssets = [
 			});
 		});
 
+		toggleButton?.addEventListener('click', () => {
+			isPaused = !isPaused;
+			setActiveSlide(activeIndex);
+			if (isPaused) {
+				window.clearInterval(timer);
+			} else {
+				startTimer();
+			}
+			updateToggleButton();
+		});
+
 		carousel.addEventListener('mouseenter', () => window.clearInterval(timer));
 		carousel.addEventListener('mouseleave', startTimer);
 		carousel.addEventListener('focusin', () => window.clearInterval(timer));
 		carousel.addEventListener('focusout', startTimer);
 
 		setActiveSlide(0);
+		updateToggleButton();
 		startTimer();
 	});
 </script>
@@ -443,8 +478,8 @@ const videoAssets = [
 	.video-carousel-button {
 		display: grid;
 		place-items: center;
-		width: 34px;
-		height: 34px;
+		width: 44px;
+		height: 44px;
 		border: 1px solid rgba(162, 135, 87, 0.16);
 		border-radius: 999px;
 		background: rgba(255, 255, 255, 0.72);
@@ -469,19 +504,33 @@ const videoAssets = [
 	}
 
 	.video-carousel-dot {
-		width: 8px;
-		height: 8px;
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
 		padding: 0;
 		border: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.video-carousel-dot::before {
+		content: '';
+		display: block;
+		width: 8px;
+		height: 8px;
 		border-radius: 999px;
 		background: rgba(162, 135, 87, 0.28);
-		cursor: pointer;
 		transition: width 0.2s ease, background-color 0.2s ease;
 	}
 
-	.video-carousel-dot.is-active {
+	.video-carousel-dot.is-active::before {
 		width: 22px;
 		background: var(--accent-deep);
+	}
+
+	.video-carousel-toggle {
+		margin-left: 4px;
 	}
 
 	@media (max-width: 980px) {

@@ -1,46 +1,107 @@
-# Astro Starter Kit: Basics
+# Portfolio de Ángel Collazo Díaz
 
-```sh
-npm create astro@latest -- --template basics
+Landing personal orientada a presentar servicios de desarrollo web, marketing digital y diseño, junto con una selección de proyectos y trabajos audiovisuales.
+
+El sitio está desarrollado con Astro y prioriza el rendimiento, la adaptación a distintos dispositivos, la accesibilidad y el posicionamiento orgánico.
+
+## Vista online
+
+[ancodi1.github.io/Landing](https://ancodi1.github.io/Landing/)
+
+## Características
+
+- Presentación profesional de servicios, conocimientos y habilidades.
+- Portfolio de proyectos de desarrollo web, diseño y marketing digital.
+- Galería de banners, flyers y piezas audiovisuales.
+- Carruseles de vídeo e imágenes con controles accesibles.
+- Diseño responsive para móvil, tablet y escritorio.
+- Descarga directa del currículum en PDF.
+- Metadatos Open Graph y Twitter Cards.
+- Datos estructurados de Schema.org.
+- Generación dinámica de `robots.txt` y `sitemap.xml`.
+
+## Tecnologías
+
+- [Astro 6](https://astro.build/)
+- HTML5
+- CSS3
+- JavaScript
+- TypeScript
+
+## Requisitos
+
+- Node.js 22.12.0 o una versión posterior.
+- npm.
+
+## Instalación
+
+Clona el repositorio e instala las dependencias:
+
+```bash
+git clone https://github.com/Ancodi1/Landing.git
+cd Landing
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Inicia el servidor de desarrollo:
 
-## 🚀 Project Structure
+```bash
+npm run dev
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+La aplicación estará disponible, por defecto, en `http://localhost:4321/Landing/`.
+
+## Comandos disponibles
+
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Inicia el servidor local con recarga automática. |
+| `npm run build` | Genera la versión de producción en `dist/`. |
+| `npm run preview` | Sirve localmente la versión de producción. |
+| `npm run astro -- <comando>` | Ejecuta comandos de la CLI de Astro. |
+
+## Estructura del proyecto
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+.
+├── public/                 # Recursos estáticos, vídeos, imágenes y CV
+├── src/
+│   ├── assets/             # Recursos procesados por Astro
+│   ├── components/         # Componentes de la interfaz
+│   ├── imx/                # Imágenes importadas por los componentes
+│   ├── layouts/            # Layout principal y metadatos SEO
+│   └── pages/              # Páginas y endpoints del sitio
+├── astro.config.mjs        # Configuración de Astro y URL pública
+├── package.json            # Dependencias y scripts
+└── tsconfig.json           # Configuración de TypeScript
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Configuración
 
-## 🧞 Commands
+El dominio y la ruta base se configuran mediante `PUBLIC_SITE_URL` y `PUBLIC_BASE_PATH`. Si no se definen, el proyecto utiliza el dominio de GitHub Pages y la ruta `/Landing` incluidos en `astro.config.mjs`.
 
-All commands are run from the root of the project, from a terminal:
+Ejemplo para generar el sitio con otro dominio:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```bash
+PUBLIC_SITE_URL=https://www.ejemplo.com PUBLIC_BASE_PATH=/ npm run build
+```
 
-## 👀 Want to learn more?
+Esta URL se utiliza para construir las direcciones canónicas, el sitemap, los metadatos sociales y los datos estructurados.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Despliegue
+
+Antes de publicar una nueva versión, genera y revisa la compilación de producción:
+
+```bash
+npm run build
+npm run preview
+```
+
+El contenido resultante de `dist/` puede desplegarse en cualquier servicio compatible con sitios estáticos, como GitHub Pages, Netlify, Vercel o Cloudflare Pages.
+
+## Autor
+
+Ángel Collazo Díaz
+
+- [GitHub](https://github.com/Ancodi1)
+- [LinkedIn](https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/)

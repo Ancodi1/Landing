@@ -2,7 +2,11 @@
 import DesignUploader from '../components/DesignUploader.astro';
 import Layout from '../layouts/Layout.astro';
 import logoCoronasIbericas from '../imx/logoci.webp';
+import logoNana from '../imx/logonana.jpg';
 import logoOmeya from '../imx/logoomeya.png';
+
+const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
 
 const capabilityGroups = [
 	{
@@ -51,8 +55,8 @@ const featuredProjects = [
 		result:
 			'El audiovisual se diseñó como una pieza central del stand para captar la atención en un entorno de gran afluencia y comunicar de forma inmediata la capacidad operativa de la empresa y el alcance de sus servicios. Se proyectó en bucle durante varias horas en pantallas de gran formato, consiguiendo visibilidad ante miles de asistentes.',
 		tools: ['Premiere', 'After Effects', 'Edición de vídeo', 'Diseño audiovisual'],
-		video: '/imx/Video_Italia_Final_web.mp4',
-		image: '/imx/Venditalia-2026_800x800.jpg'
+		video: assetPath('imx/Video_Italia_Final_web.mp4'),
+		image: assetPath('imx/Venditalia-2026_800x800.jpg')
 	},
 	{
 		title: 'Alma Matter',
@@ -65,24 +69,24 @@ const featuredProjects = [
 			'Aplicación funcional y responsive con CRUD, búsqueda, paginación, validaciones y seguridad web. Complejidad media-alta.',
 		tools: ['PHP', 'MySQL', 'JavaScript', 'CSS', 'Arquitectura MVC'],
 		url: 'https://github.com/Ancodi1/Academia-Alma-Matter-Ancodi',
-		image: '/imx/logo.png'
+		image: assetPath('imx/logo.png')
 	},
 	{
 		title: 'Nana Nails',
 		type: 'Web para negocio local',
-		status: '',
+		status: 'Trabajo finalizado',
 		highlight: 'Presencia digital orientada a captar nuevos clientes',
 		summary:
 			'Diseño y desarrollo web para Nana Nails, creado para representar la identidad del negocio, presentar sus servicios de forma atractiva y mejorar su visibilidad en las búsquedas locales.',
 		result:
 			'Una web profesional, responsive y optimizada para facilitar que potenciales clientes encuentren el negocio, conozcan sus servicios y contacten con mayor facilidad.',
 		tools: ['Astro', 'Diseño web', 'SEO local', 'Experiencia de usuario', 'Diseño responsive'],
-		image: ''
+		image: logoNana.src
 	},
 	{
 		title: 'Guardia Omeya',
 		type: 'Web para clan de gaming',
-		status: '',
+		status: 'Proyecto personal',
 		summary:
 			'Proyecto web para Guardia Omeya, un clan de Mount & Blade II: Bannerlord, pensado como espacio de presentación, comunidad e identidad del grupo.',
 		tools: ['Diseño web', 'Desarrollo', 'Experiencia UX'],
@@ -91,13 +95,14 @@ const featuredProjects = [
 	{
 		title: 'Coronas Ibéricas',
 		type: 'Colaboración en proyecto web',
-		status: 'En funcionamiento',
+		status: 'Trabajo finalizado',
 		highlight: 'Colaborador del proyecto',
 		summary:
-			'Colaboración en el proyecto web de Coronas Ibéricas, actualmente publicado y en funcionamiento.',
+			'Colaboración en el proyecto web de Coronas Ibéricas, web con conexiones en tiempo real a Discord y con acciones dinamicas.',
 		tools: ['Colaboración web', 'Desarrollo web'],
 		url: 'https://www.coronasibericas.com/',
-		image: logoCoronasIbericas.src
+		image: logoCoronasIbericas.src,
+		containImage: true
 	}
 ];
 
@@ -109,7 +114,7 @@ const featuredProjects = [
 >
 	<div class="page-shell" id="top">
 		<header class="topbar">
-			<a class="brand" href="#top" aria-label="Ir al inicio"><img src="/favicon.svg" alt="Logo" /> Ángel Collazo Díaz</a>
+			<a class="brand" href="#top" aria-label="Ir al inicio"><img src={assetPath('favicon.svg')} alt="Logo" /> Ángel Collazo Díaz</a>
 			<nav aria-label="Secciones principales">
 				<a href="#proyectos">Proyectos</a>
 				<a href="#disenos">Diseños</a>
@@ -130,7 +135,7 @@ const featuredProjects = [
 					<a class="button-secondary" href="#contacto">Contactar conmigo</a>
 					<a
 						class="button-secondary"
-						href="/Angel-Collazo-Diaz-CV.pdf"
+						href={assetPath('Angel-Collazo-Diaz-CV.pdf')}
 						download="CV-Angel-Collazo-Diaz.pdf"
 					>
 						Descargar CV
@@ -201,7 +206,13 @@ const featuredProjects = [
 								aria-label={`Ver proyecto ${project.title}`}
 							>
 								{project.image ? (
-									<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+									<img
+										src={project.image}
+										alt={project.title}
+										class:list={{ 'project-logo': project.containImage }}
+										loading="lazy"
+										decoding="async"
+									/>
 								) : (
 									<span>{String(index + 1).padStart(2, '0')}</span>
 								)}
@@ -272,12 +283,12 @@ const featuredProjects = [
 							Para propuestas de trabajo, colaboraciones o cualquier consulta, puedes escribirme
 							directamente a:
 						</p>
-						<a class="contact-email" href="mailto:angel.97.cd@gmail.com">
-							angel.97.cd@gmail.com
+						<a class="contact-email" href="mailto:angelcollazodiaz@gmail.com">
+							angelcollazodiaz@gmail.com
 						</a>
 						<a
 							class="contact-cv"
-							href="/Angel-Collazo-Diaz-CV.pdf"
+							href={assetPath('Angel-Collazo-Diaz-CV.pdf')}
 							download="CV-Angel-Collazo-Diaz.pdf"
 						>
 							Descargar currículum
@@ -601,6 +612,12 @@ const featuredProjects = [
 		object-fit: cover;
 	}
 
+	.project-visual img.project-logo {
+		object-fit: contain;
+		object-position: center;
+		padding: 12px;
+	}
+
 	.project-video-trigger {
 		position: relative;
 		width: 100%;
@@ -804,6 +821,18 @@ const featuredProjects = [
 		.project-visual {
 			min-height: 132px;
 			aspect-ratio: 16 / 9;
+		}
+
+		.project-video-dialog {
+			width: calc(100vw - 24px);
+			overflow: hidden;
+		}
+
+		.project-video-close {
+			top: 10px;
+			right: 10px;
+			width: 44px;
+			height: 44px;
 		}
 	}
 
