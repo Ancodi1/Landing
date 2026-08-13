@@ -1,12 +1,16 @@
 .astro/
 dist/
 node_modules/
-public/imx/Video_Italia_Final.mp4
+.env
+.env.*
+!.env.example
 
-# La salida principal ya está versionada para el despliegue.
-# Astro genera aquí el CSS y las imágenes procesadas.
-!dist/
-dist/*
-!dist/_astro/
-!dist/_astro/**
-!dist/.nojekyll
+# Recursos originales o antiguos que no utiliza la landing.
+public/imx/Video_Italia_Final.mp4
+public/imx/BANNER_03.png
+public/imx/BannerNovedadesMovil 700 x 200 px.png
+public/imx/MUESTRABANNERS.png
+public/imx/NANA_NAILS.png
+public/imx/banner-home-durex-texto.mov
+public/imx/banner01.webm
+public/imx/categoria-jake.png
