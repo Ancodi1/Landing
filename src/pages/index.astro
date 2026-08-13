@@ -1,7 +1,6 @@
 ---
 import DesignUploader from '../components/DesignUploader.astro';
 import Layout from '../layouts/Layout.astro';
-import logoCoronasIbericas from '../imx/logoci.webp';
 import logoNana from '../imx/logonana.jpg';
 import logoOmeya from '../imx/logoomeya.png';
 
@@ -101,7 +100,7 @@ const featuredProjects = [
 			'Colaboración en el proyecto web de Coronas Ibéricas, web con conexiones en tiempo real a Discord y con acciones dinamicas.',
 		tools: ['Colaboración web', 'Desarrollo web'],
 		url: 'https://www.coronasibericas.com/',
-		image: logoCoronasIbericas.src,
+		image: assetPath('imx/logoci-500.webp'),
 		containImage: true
 	}
 ];
@@ -182,7 +181,7 @@ const featuredProjects = [
 									data-video-open={`project-video-${index}`}
 									aria-label={`Reproducir vídeo de ${project.title}`}
 								>
-									<img src={project.image} alt="" loading="lazy" decoding="async" />
+									<img src={project.image} alt="" loading="eager" fetchpriority="high" decoding="async" />
 									<span class="project-play" aria-hidden="true">
 										<svg viewBox="0 0 24 24">
 											<path d="M8.5 6.2v11.6L18 12 8.5 6.2Z" />
@@ -191,7 +190,7 @@ const featuredProjects = [
 								</button>
 								<dialog class="project-video-dialog" id={`project-video-${index}`}>
 									<button class="project-video-close" type="button" aria-label="Cerrar vídeo">×</button>
-									<video controls playsinline preload="metadata" poster={project.image}>
+									<video controls playsinline preload="none" poster={project.image}>
 										<source src={project.video} type="video/mp4" />
 										Tu navegador no puede reproducir este vídeo.
 									</video>
@@ -210,7 +209,7 @@ const featuredProjects = [
 										src={project.image}
 										alt={project.title}
 										class:list={{ 'project-logo': project.containImage }}
-										loading="lazy"
+										loading="eager"
 										decoding="async"
 									/>
 								) : (
@@ -220,7 +219,7 @@ const featuredProjects = [
 						) : (
 							<div class="project-visual">
 								{project.image ? (
-									<img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+									<img src={project.image} alt={project.title} loading="eager" decoding="async" />
 								) : (
 									<span>{String(index + 1).padStart(2, '0')}</span>
 								)}
@@ -613,9 +612,10 @@ const featuredProjects = [
 	}
 
 	.project-visual img.project-logo {
+		box-sizing: border-box;
 		object-fit: contain;
 		object-position: center;
-		padding: 12px;
+		padding: 18px;
 	}
 
 	.project-video-trigger {

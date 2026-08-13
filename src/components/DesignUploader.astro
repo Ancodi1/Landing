@@ -4,26 +4,28 @@ const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
 
 const flyerAssets = [
 	{
-		src: assetPath('imx/flyer-a.png'),
+		src: assetPath('imx/flyer-a-thumb.webp'),
+		href: assetPath('imx/flyer-a.png'),
 		title: 'Flyer Venditalia 2026',
 		description: 'Flyer vertical completo para Venditalia 2026.',
-		width: 1181,
-		height: 2480
+		width: 720,
+		height: 1512
 	},
 	{
-		src: assetPath('imx/flyer-b.png'),
+		src: assetPath('imx/flyer-b-thumb.webp'),
+		href: assetPath('imx/flyer-b.png'),
 		title: 'Flyer Venditalia 2026',
 		description: 'Segunda versión del flyer vertical para Venditalia 2026.',
-		width: 1181,
-		height: 2480
+		width: 720,
+		height: 1512
 	}
 ];
 
 const desktopBannerAsset = {
-	src: `${assetPath('imx/MUESTRABANNERS.png')}?v=2`,
+	src: assetPath('imx/MUESTRABANNERS.webp'),
 	title: 'Muestra de banners promocionales',
-	width: 1920,
-	height: 1080
+	width: 1400,
+	height: 788
 };
 
 const mobileCategoryAssets = [
@@ -85,7 +87,7 @@ const videoAssets = [
 							<video
 								class="video-main"
 								playsinline
-								preload="metadata"
+								preload="none"
 								muted
 								loop
 								disablepictureinpicture
@@ -180,7 +182,7 @@ const videoAssets = [
 		<div class="flyer-grid">
 			{flyerAssets.map((asset) => (
 				<figure class="asset-card flyer-card">
-					<a href={asset.src} target="_blank" rel="noreferrer">
+					<a href={asset.href} target="_blank" rel="noreferrer">
 						<img
 							src={asset.src}
 							alt={asset.title}
@@ -207,6 +209,7 @@ const videoAssets = [
 		let activeIndex = 0;
 		let timer;
 		let isPaused = reducedMotion;
+		let isInViewport = false;
 
 		const updateToggleButton = () => {
 			if (!(toggleButton instanceof HTMLButtonElement)) return;
@@ -232,7 +235,7 @@ const videoAssets = [
 				slide.setAttribute('aria-hidden', String(!isActive));
 
 				slide.querySelectorAll('video').forEach((video) => {
-					if (isActive && !isPaused) {
+					if (isActive && !isPaused && isInViewport) {
 						video.play().catch(() => {});
 					} else {
 						video.pause();
@@ -249,7 +252,7 @@ const videoAssets = [
 
 		const startTimer = () => {
 			window.clearInterval(timer);
-			if (isPaused) return;
+			if (isPaused || !isInViewport) return;
 			timer = window.setInterval(() => setActiveSlide(activeIndex + 1), 6000);
 		};
 
@@ -286,9 +289,24 @@ const videoAssets = [
 		carousel.addEventListener('focusin', () => window.clearInterval(timer));
 		carousel.addEventListener('focusout', startTimer);
 
-		setActiveSlide(0);
 		updateToggleButton();
-		startTimer();
+
+		if ('IntersectionObserver' in window) {
+			const observer = new IntersectionObserver(
+				([entry]) => {
+					isInViewport = entry.isIntersecting;
+					setActiveSlide(activeIndex);
+					if (isInViewport) startTimer();
+					else window.clearInterval(timer);
+				},
+				{ rootMargin: '200px 0px', threshold: 0.01 }
+			);
+			observer.observe(carousel);
+		} else {
+			isInViewport = true;
+			setActiveSlide(0);
+			startTimer();
+		}
 	});
 </script>
 
