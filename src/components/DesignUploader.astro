@@ -626,4 +626,42 @@ const videoAssets = [
 		}
 
 	}
+
+	@media print {
+		.media-section {
+			margin-bottom: 8mm;
+			padding: 7mm;
+			box-shadow: none;
+			break-inside: auto;
+		}
+
+		.media-heading,
+		.asset-group {
+			margin-bottom: 6mm;
+		}
+
+		.video-carousel,
+		.mobile-banner-gallery {
+			display: none !important;
+		}
+
+		.desktop-banner-showcase,
+		.flyer-card {
+			break-inside: avoid-page;
+		}
+
+		.flyer-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 5mm;
+		}
+
+		.flyer-card a {
+			padding: 3mm;
+		}
+
+		.flyer-card img {
+			max-height: 112mm;
+			width: auto;
+		}
+	}
 </style>

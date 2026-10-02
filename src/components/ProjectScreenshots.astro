@@ -1,0 +1,29 @@
+---
+import type { ProjectScreenshot } from '../data/prestashop-security-module';
+interface Props { screenshots: ProjectScreenshot[]; }
+const { screenshots } = Astro.props;
+const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+{screenshots.length ? (
+	<div class="screenshot-grid">
+		{screenshots.map((shot) => (
+			<figure class="capability-card">
+				<a href={`${basePath}${shot.src.replace(/^\/+/, '')}`} target="_blank" rel="noreferrer" aria-label={`Ampliar: ${shot.alt}`}>
+					<img src={`${basePath}${shot.src.replace(/^\/+/, '')}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
+				</a>
+				<figcaption>{shot.caption}</figcaption>
+			</figure>
+		))}
+	</div>
+) : (
+	<div class="capability-card">
+		<p>Las capturas de la interfaz estarán disponibles próximamente, tras las pruebas finales del módulo.</p>
+	</div>
+)}
+<style>
+	.screenshot-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+	figure { margin: 0; min-width: 0; }
+	img { display: block; width: 100%; height: auto; border-radius: 16px; }
+	figcaption { margin-top: 14px; color: var(--muted); line-height: 1.7; }
+	@media (max-width: 720px) { .screenshot-grid { grid-template-columns: 1fr; } }
+</style>

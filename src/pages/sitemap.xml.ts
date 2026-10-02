@@ -5,6 +5,7 @@ export const GET: APIRoute = ({ site }) => {
 	const siteUrl = site ?? new URL('https://www.angelcollazo.com');
 	const baseUrl = new URL(basePath, siteUrl);
 	const homeUrl = new URL('', baseUrl);
+	const moduleUrl = new URL('proyectos/prestashop-security-module/', baseUrl);
 	const lastModified = new Date().toISOString().split('T')[0];
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -13,6 +14,12 @@ export const GET: APIRoute = ({ site }) => {
     <lastmod>${lastModified}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${moduleUrl.href}</loc>
+    <lastmod>${lastModified}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>`;
 

@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectScreenshots from '../../components/ProjectScreenshots.astro';
+import { securityModule as project } from '../../data/prestashop-security-module';
+import '../../styles/portfolio.css';
+const homeUrl = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+const contactUrl = `${homeUrl}#contacto`;
+---
+<Layout title="Desarrollo de módulos PrestaShop | Ángel Collazo" description="Desarrollo de módulos, integraciones y funcionalidades personalizadas para tiendas PrestaShop. Conoce mi módulo propio de ciberseguridad en fase de pruebas finales.">
+	<div class="portfolio page-shell" id="top">
+		<header class="topbar">
+			<a class="brand" href={homeUrl}><img src={`${homeUrl}favicon.svg`} alt="" /> Ángel Collazo Díaz</a>
+			<nav aria-label="Navegación del portfolio">
+				<a href={`${homeUrl}#proyectos`}>Proyectos</a>
+				<a href="#caracteristicas">Características</a>
+				<a href={contactUrl}>Contacto</a>
+			</nav>
+		</header>
+		<main>
+			<section class="hero section">
+				<p class="eyebrow">Desarrollo propio · PrestaShop</p>
+				<h1>{project.title}</h1>
+				<p class="hero-copy">{project.introduction}</p>
+				<div class="hero-actions"><p class="project-status">{project.status}</p></div>
+				<div class="hero-actions">
+					<a class="button-primary" href={contactUrl}>Solicitar desarrollo PrestaShop</a>
+					<a class="button-secondary" href={`${homeUrl}#proyectos`}>Volver a proyectos</a>
+				</div>
+			</section>
+			<section class="section capabilities-band">
+				<div class="capabilities-intro">
+					<p class="section-kicker">El proyecto</p>
+					<h2>Seguridad integrada en la experiencia de la tienda.</h2>
+				</div>
+				<div class="capability-card">
+					<h3>El problema</h3>
+					<p>Las tiendas online necesitan cuidar la seguridad del acceso de sus clientes sin complicar la gestión diaria. Este proyecto incorpora funcionalidades de seguridad en el entorno de PrestaShop y en la experiencia del cliente.</p>
+					<h3>El desarrollo</h3>
+					<p>Desarrollado desde cero, el módulo integra configuración desde Back Office, funcionalidades para Front Office y persistencia mediante tablas propias. Su arquitectura permite gestionar la instalación y desinstalación sin modificar la estructura de las tablas core de PrestaShop.</p>
+					<p>Es un producto privado con orientación comercial, actualmente en pruebas finales previas al lanzamiento.</p>
+				</div>
+				<div class="project-content">
+					<h3>Tecnologías utilizadas</h3>
+					<div class="project-tools" aria-label="Tecnologías utilizadas">{project.technologies.map((technology) => <span>{technology}</span>)}</div>
+				</div>
+			</section>
+			<section id="caracteristicas" class="section capabilities-band">
+				<div class="capabilities-intro"><p class="section-kicker">Características principales</p><h2>Un módulo pensado para el ecosistema PrestaShop.</h2></div>
+				<div class="capabilities-grid">{project.features.map((feature) => <article class="capability-card"><h3>{feature.title}</h3><p>{feature.description}</p></article>)}</div>
+			</section>
+			<section class="section capabilities-band" aria-labelledby="capturas-title">
+				<div class="capabilities-intro"><p class="section-kicker">Interfaz</p><h2 id="capturas-title">Capturas del módulo</h2></div>
+				<ProjectScreenshots screenshots={project.screenshots} />
+			</section>
+			<section class="section capabilities-band">
+				<div class="capabilities-intro"><p class="section-kicker">Estado actual</p><h2>Pruebas finales antes del lanzamiento.</h2></div>
+				<p>Estado: <strong>{project.status}</strong>. El módulo está en fase de validación previa a su lanzamiento y todavía no está publicado en el Marketplace de PrestaShop.</p>
+			</section>
+			<section class="section capabilities-band">
+				<div class="capabilities-intro"><p class="section-kicker">Trabajemos juntos</p><h2>Desarrollo de módulos PrestaShop a medida</h2></div>
+				<div class="capability-card">
+					<p>Además del desarrollo de módulos propios, realizo desarrollos personalizados para PrestaShop.</p>
+					<p>Si necesitas añadir una funcionalidad específica a tu tienda, automatizar un proceso, integrar un servicio externo o desarrollar un módulo desde cero, puedes contactar conmigo para estudiar el proyecto. También acepto encargos de adaptaciones de tiendas y desarrollo web relacionado con ecommerce.</p>
+					<div><a class="button-primary" href={contactUrl}>Solicitar desarrollo PrestaShop</a></div>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>

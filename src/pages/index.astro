@@ -1,11 +1,14 @@
 ---
 import DesignUploader from '../components/DesignUploader.astro';
 import Layout from '../layouts/Layout.astro';
-import logoNana from '../imx/logonana.jpg';
+import '../styles/portfolio.css';
+import { securityModule } from '../data/prestashop-security-module';
+import logoCoronasIbericas from '../imx/logoci.webp';
 import logoOmeya from '../imx/logoomeya.png';
+import logoNana from '../imx/logonana.jpg';
 
 const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
-const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
+const moduleUrl = `${basePath}proyectos/prestashop-security-module/`;
 
 const capabilityGroups = [
 	{
@@ -45,6 +48,15 @@ const capabilityGroups = [
 
 const featuredProjects = [
 	{
+		title: securityModule.title,
+		type: 'Módulo privado · PrestaShop',
+		status: securityModule.status,
+		highlight: 'Desarrollo propio de ciberseguridad para ecommerce',
+		summary: securityModule.introduction,
+		tools: securityModule.technologies,
+		detailUrl: moduleUrl
+	},
+	{
 		title: 'Audiovisual para landing Venditalia 2026',
 		type: 'Evento B2B',
 		status: 'Proyecto real',
@@ -54,8 +66,8 @@ const featuredProjects = [
 		result:
 			'El audiovisual se diseñó como una pieza central del stand para captar la atención en un entorno de gran afluencia y comunicar de forma inmediata la capacidad operativa de la empresa y el alcance de sus servicios. Se proyectó en bucle durante varias horas en pantallas de gran formato, consiguiendo visibilidad ante miles de asistentes.',
 		tools: ['Premiere', 'After Effects', 'Edición de vídeo', 'Diseño audiovisual'],
-		video: assetPath('imx/Video_Italia_Final_web.mp4'),
-		image: assetPath('imx/Venditalia-2026_800x800.jpg')
+		video: '/imx/Video_Italia_Final_web.mp4',
+		image: '/imx/Venditalia-2026_800x800.jpg'
 	},
 	{
 		title: 'Alma Matter',
@@ -68,7 +80,7 @@ const featuredProjects = [
 			'Aplicación funcional y responsive con CRUD, búsqueda, paginación, validaciones y seguridad web. Complejidad media-alta.',
 		tools: ['PHP', 'MySQL', 'JavaScript', 'CSS', 'Arquitectura MVC'],
 		url: 'https://github.com/Ancodi1/Academia-Alma-Matter-Ancodi',
-		image: assetPath('imx/logo.png')
+		image: '/imx/logo.png'
 	},
 	{
 		title: 'Nana Nails',
@@ -80,8 +92,8 @@ const featuredProjects = [
 		result:
 			'Una web profesional, responsive y optimizada para facilitar que potenciales clientes encuentren el negocio, conozcan sus servicios y contacten con mayor facilidad.',
 		tools: ['Astro', 'Diseño web', 'SEO local', 'Experiencia de usuario', 'Diseño responsive'],
+		image: logoNana.src,
 		url: 'https://www.nananailscarballo.com/',
-		image: logoNana.src
 	},
 	{
 		title: 'Guardia Omeya',
@@ -102,7 +114,7 @@ const featuredProjects = [
 			'Colaboración en el proyecto web de Coronas Ibéricas, web con conexiones en tiempo real a Discord y con acciones dinamicas.',
 		tools: ['Colaboración web', 'Desarrollo web'],
 		url: 'https://www.coronasibericas.com/',
-		image: assetPath('imx/logoci-500.webp'),
+		image: logoCoronasIbericas.src,
 		containImage: true
 	}
 ];
@@ -111,12 +123,13 @@ const featuredProjects = [
 
 <Layout
 	title="Desarrollador Full Stack Freelance en Galicia | Ángel Collazo"
-	description="Desarrollador full stack freelance en Galicia. Diseño web, PHP, JavaScript, SEO, Google Ads y marketing digital para empresas de toda España."
+	description="Desarrollador full stack freelance en Galicia. Desarrollo web, módulos PrestaShop a medida, PHP, MySQL y marketing digital para empresas de toda España."
 >
-	<div class="page-shell" id="top">
+	<div class="page-shell portfolio" id="top">
 		<header class="topbar">
-			<a class="brand" href="#top" aria-label="Ir al inicio"><img src={assetPath('favicon.svg')} alt="Logo" /> Ángel Collazo Díaz</a>
+			<a class="brand" href="#top" aria-label="Ir al inicio"><img src={`${basePath}favicon.svg`} alt="Logo" /> Ángel Collazo Díaz</a>
 			<nav aria-label="Secciones principales">
+				<a href="#prestashop">PrestaShop</a>
 				<a href="#proyectos">Proyectos</a>
 				<a href="#disenos">Diseños</a>
 				<a href="#contacto">Contacto</a>
@@ -129,14 +142,14 @@ const featuredProjects = [
 				<h1>Desarrollo web y marketing digital para empresas que quieren posicionarse y vender mejor.</h1>
 				<p class="hero-copy">
 					Ayudo a marcas y empresas de Galicia y del resto de España con desarrollo full stack,
-					diseño web, SEO, campañas digitales y una estrategia clara para captar clientes.
+					diseño web, módulos PrestaShop a medida, SEO y campañas digitales para captar clientes.
 				</p>
 				<div class="hero-actions">
 					<a class="button-primary" href="#proyectos">Ver proyectos</a>
 					<a class="button-secondary" href="#contacto">Contactar conmigo</a>
 					<a
 						class="button-secondary"
-						href={assetPath('Angel-Collazo-Diaz-CV.pdf')}
+						href={`${basePath}Angel-Collazo-Diaz-CV.pdf`}
 						download="CV-Angel-Collazo-Diaz.pdf"
 					>
 						Descargar CV
@@ -166,6 +179,20 @@ const featuredProjects = [
 				</div>
 			</section>
 
+
+			<section id="prestashop" class="section capabilities-band">
+				<div class="capabilities-intro">
+					<p class="section-kicker">Servicios de desarrollo</p>
+					<h2>Desarrollo PrestaShop</h2>
+					<p>Desarrollo de módulos personalizados para PrestaShop adaptados a las necesidades de cada negocio. Creación de nuevas funcionalidades, automatizaciones, integraciones y herramientas para Back Office y Front Office.</p>
+				</div>
+				<div class="capability-card">
+					<h3>Módulos y soluciones a medida para tu tienda</h3>
+					<p>¿Necesitas una funcionalidad que PrestaShop no incluye? Desarrollo módulos y soluciones a medida para tiendas PrestaShop. Acepto encargos freelance de integraciones, automatizaciones, adaptaciones de tiendas y desarrollo web para ecommerce.</p>
+					<div><a class="button-primary" href="#contacto">Solicitar desarrollo</a></div>
+				</div>
+			</section>
+
 		<section id="proyectos" class="section projects-band">
 			<div class="projects-heading">
 				<p class="section-kicker">Proyectos</p>
@@ -183,7 +210,7 @@ const featuredProjects = [
 									data-video-open={`project-video-${index}`}
 									aria-label={`Reproducir vídeo de ${project.title}`}
 								>
-									<img src={project.image} alt="" loading="eager" fetchpriority="high" decoding="async" />
+									<img src={project.image?.startsWith('/imx/') ? `${basePath}${project.image.slice(1)}` : project.image} alt="" loading="lazy" decoding="async" />
 									<span class="project-play" aria-hidden="true">
 										<svg viewBox="0 0 24 24">
 											<path d="M8.5 6.2v11.6L18 12 8.5 6.2Z" />
@@ -192,12 +219,14 @@ const featuredProjects = [
 								</button>
 								<dialog class="project-video-dialog" id={`project-video-${index}`}>
 									<button class="project-video-close" type="button" aria-label="Cerrar vídeo">×</button>
-									<video controls playsinline preload="none" poster={project.image}>
-										<source src={project.video} type="video/mp4" />
+									<video controls playsinline preload="metadata" poster={project.image?.startsWith('/imx/') ? `${basePath}${project.image.slice(1)}` : project.image}>
+										<source src={`${basePath}${project.video.slice(1)}`} type="video/mp4" />
 										Tu navegador no puede reproducir este vídeo.
 									</video>
 								</dialog>
 							</>
+						) : project.detailUrl ? (
+							<a class="project-visual project-visual-link" href={project.detailUrl} aria-label={`Ver ficha de ${project.title}`}><span>{String(index + 1).padStart(2, '0')}</span></a>
 						) : project.url ? (
 							<a
 								class="project-visual project-visual-link"
@@ -208,10 +237,10 @@ const featuredProjects = [
 							>
 								{project.image ? (
 									<img
-										src={project.image}
+										src={project.image?.startsWith('/imx/') ? `${basePath}${project.image.slice(1)}` : project.image}
 										alt={project.title}
 										class:list={{ 'project-logo': project.containImage }}
-										loading="eager"
+										loading="lazy"
 										decoding="async"
 									/>
 								) : (
@@ -221,7 +250,7 @@ const featuredProjects = [
 						) : (
 							<div class="project-visual">
 								{project.image ? (
-									<img src={project.image} alt={project.title} loading="eager" decoding="async" />
+									<img src={project.image?.startsWith('/imx/') ? `${basePath}${project.image.slice(1)}` : project.image} alt={project.title} loading="lazy" decoding="async" />
 								) : (
 									<span>{String(index + 1).padStart(2, '0')}</span>
 								)}
@@ -233,7 +262,9 @@ const featuredProjects = [
 								{project.status && <p class="project-status">{project.status}</p>}
 							</div>
 							<h4>
-								{project.url ? (
+								{project.detailUrl ? (
+									<a href={project.detailUrl}>{project.title}</a>
+								) : project.url ? (
 									<a href={project.url} target="_blank" rel="noreferrer">{project.title}</a>
 								) : (
 									project.title
@@ -247,6 +278,7 @@ const featuredProjects = [
 									{project.tools.map((tool) => <span>{tool}</span>)}
 								</div>
 							)}
+							{project.detailUrl && <a class="project-link" href={project.detailUrl}>Ver ficha del proyecto</a>}
 							{project.video && (
 								<button
 									class="project-link project-video-link"
@@ -274,7 +306,8 @@ const featuredProjects = [
 					<p class="section-kicker">Contacto</p>
 					<p>
 						Disponible como desarrollador web y profesional de marketing digital freelance para
-						proyectos en Galicia y toda España. Puedes escribirme por email o visitar mi perfil
+						proyectos en Galicia y toda España, incluidos módulos PrestaShop a medida,
+						integraciones y automatizaciones para ecommerce. Puedes escribirme por email o visitar mi perfil
 						de LinkedIn para conocer mi trayectoria.
 					</p>
 					<div class="contact-card">
@@ -289,7 +322,7 @@ const featuredProjects = [
 						</a>
 						<a
 							class="contact-cv"
-							href={assetPath('Angel-Collazo-Diaz-CV.pdf')}
+							href={`${basePath}Angel-Collazo-Diaz-CV.pdf`}
 							download="CV-Angel-Collazo-Diaz.pdf"
 						>
 							Descargar currículum
@@ -321,6 +354,14 @@ const featuredProjects = [
 </Layout>
 
 <script>
+	const preparePageForPrint = () => {
+		document.querySelectorAll('img[loading="lazy"]').forEach((image) => {
+			image.setAttribute('loading', 'eager');
+		});
+	};
+
+	window.addEventListener('beforeprint', preparePageForPrint);
+
 	document.querySelectorAll('[data-video-open]').forEach((trigger) => {
 		trigger.addEventListener('click', () => {
 			const dialogId = trigger.getAttribute('data-video-open');
@@ -352,773 +393,3 @@ const featuredProjects = [
 		});
 	});
 </script>
-
-<style>
-	:root {
-		--surface-soft: rgba(255, 255, 255, 0.46);
-		--surface-warm: rgba(255, 250, 243, 0.82);
-		--shadow-soft: 0 18px 40px rgba(28, 21, 12, 0.06);
-	}
-
-	.page-shell {
-		width: min(1180px, calc(100% - 40px));
-		margin: 0 auto;
-		padding: 30px 0 84px;
-	}
-
-	.topbar {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 24px;
-		padding: 16px 20px;
-		margin-bottom: 48px;
-		position: sticky;
-		top: 14px;
-		z-index: 10;
-		background: rgba(255, 252, 247, 0.78);
-		backdrop-filter: blur(18px);
-		border: 1px solid var(--line);
-		border-radius: 999px;
-		box-shadow: 0 10px 30px rgba(28, 21, 12, 0.06);
-	}
-
-	.brand {
-		margin: 0;
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		font-size: 0.78rem;
-		font-weight: 800;
-		letter-spacing: 0.28em;
-		text-transform: uppercase;
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.brand:hover,
-	.brand:focus,
-	.brand:visited {
-		color: inherit;
-	}
-
-	.brand img {
-		width: 42px;
-		height: 42px;
-	}
-
-	nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
-
-	nav a {
-		font-size: 0.92rem;
-		font-weight: 700;
-		text-decoration: none;
-		color: var(--muted);
-		padding: 10px 16px;
-		border-radius: 999px;
-		transition:
-			color 0.24s ease,
-			background-color 0.24s ease;
-	}
-
-	nav a:hover {
-		color: var(--text);
-		background: rgba(162, 135, 87, 0.08);
-	}
-
-	.section {
-		margin-bottom: 72px;
-	}
-
-	.eyebrow {
-		margin: 0 0 22px;
-		display: inline-block;
-		padding: 12px 22px;
-		border-radius: 999px;
-		background: linear-gradient(100deg, #1f302b 0%, #466258 100%);
-		border: 1px solid rgba(255, 255, 255, 0.24);
-		box-shadow: 0 10px 26px rgba(31, 48, 43, 0.24);
-		font-family: var(--font-sans);
-		font-size: clamp(0.84rem, 1.5vw, 0.96rem);
-		font-weight: 800;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: #ffffff;
-	}
-
-	.section-kicker {
-		margin: 0 0 16px;
-		display: block;
-		padding: 0;
-		border: none;
-		font-family: var(--font-sans);
-		font-size: 1.16rem;
-		font-weight: 700;
-		letter-spacing: -0.01em;
-		line-height: 1.25;
-		text-transform: none;
-		color: var(--text);
-	}
-
-	h1,
-	h2,
-	h3 {
-		margin: 0;
-		font-family: var(--font-display);
-		font-weight: 600;
-		letter-spacing: -0.035em;
-		color: var(--text);
-	}
-
-	h1 {
-		max-width: 24ch;
-		margin: 0 auto;
-		font-size: clamp(2.35rem, 4.6vw, 3.8rem);
-		line-height: 1.04;
-		text-align: center;
-		text-wrap: balance;
-	}
-
-	h2 {
-		font-size: clamp(2.2rem, 4vw, 3.5rem);
-		line-height: 0.98;
-	}
-
-	h3 {
-		font-size: clamp(1.6rem, 2.2vw, 2.15rem);
-		line-height: 1.02;
-	}
-
-	p,
-	li {
-		margin: 0;
-		font-size: 1rem;
-		line-height: 1.82;
-		color: var(--muted);
-	}
-
-	.hero {
-		text-align: center;
-		padding: 34px 24px 38px;
-		border-radius: 36px;
-		background:
-			radial-gradient(circle at top, rgba(255, 255, 255, 0.55), transparent 60%),
-			var(--surface-soft);
-		box-shadow: var(--shadow-soft);
-	}
-
-	.hero-copy {
-		max-width: 72ch;
-		margin: 18px auto 0;
-		font-size: 1rem;
-	}
-
-	.hero-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 14px;
-		justify-content: center;
-		margin-top: 20px;
-	}
-
-	.button-primary,
-	.button-secondary {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 14px 22px;
-		border-radius: 999px;
-		text-decoration: none;
-		font-weight: 700;
-		transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-	}
-
-	.button-primary {
-		background: linear-gradient(90deg, #1f302b 0%, #466258 100%);
-		color: #ffffff;
-		box-shadow: 0 10px 22px rgba(31, 48, 43, 0.2);
-	}
-
-	.button-secondary {
-		background: rgba(255, 255, 255, 0.88);
-		color: var(--text);
-		border: 1px solid rgba(133, 112, 76, 0.2);
-	}
-
-	.button-primary:hover,
-	.button-secondary:hover {
-		transform: translateY(-1px);
-	}
-
-	.projects-band {
-		padding: 34px;
-		border-radius: 32px;
-		background: linear-gradient(180deg, rgba(255, 249, 241, 0.94), rgba(255, 255, 255, 0.65));
-		box-shadow: var(--shadow-soft);
-	}
-
-	.projects-heading {
-		max-width: none;
-		margin-bottom: 28px;
-	}
-
-	.projects-grid {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		gap: 22px;
-	}
-
-	.project-card {
-		display: grid;
-		grid-template-columns: 156px minmax(0, 1fr);
-		align-items: start;
-		gap: 20px;
-		padding: 18px;
-		border-radius: 24px;
-		background: rgba(255, 255, 255, 0.9);
-		border: 1px solid rgba(162, 135, 87, 0.12);
-	}
-
-	.project-visual {
-		display: grid;
-		place-items: center;
-		min-height: 156px;
-		aspect-ratio: 1;
-		border-radius: 18px;
-		overflow: hidden;
-		background:
-			linear-gradient(135deg, rgba(123, 99, 57, 0.16), rgba(162, 135, 87, 0.1)),
-			rgba(255, 250, 243, 0.8);
-		color: var(--accent-deep);
-		text-decoration: none;
-		transition: transform 0.22s ease, box-shadow 0.22s ease;
-	}
-
-	.project-visual-link {
-		cursor: pointer;
-	}
-
-	.project-visual-link:hover {
-		transform: translateY(-4px) scale(1.04);
-		box-shadow: 0 20px 42px rgba(28, 21, 12, 0.16);
-	}
-
-	.project-visual img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.project-visual img.project-logo {
-		box-sizing: border-box;
-		object-fit: contain;
-		object-position: center;
-		padding: 18px;
-	}
-
-	.project-video-trigger {
-		position: relative;
-		width: 100%;
-		padding: 0;
-		border: 0;
-		cursor: pointer;
-	}
-
-	.project-play {
-		position: absolute;
-		inset: 50% auto auto 50%;
-		display: grid;
-		place-items: center;
-		width: 48px;
-		height: 48px;
-		padding: 0;
-		border-radius: 50%;
-		transform: translate(-50%, -50%);
-		background: rgba(31, 48, 43, 0.92);
-		box-shadow: 0 10px 28px rgba(20, 19, 22, 0.3);
-		color: #fff;
-	}
-
-	.project-play svg {
-		display: block;
-		width: 23px;
-		height: 23px;
-		fill: currentColor;
-	}
-
-	.project-video-dialog {
-		width: min(94vw, 1200px);
-		max-width: none;
-		padding: 0;
-		border: 0;
-		border-radius: 20px;
-		overflow: visible;
-		background: #111;
-		box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
-	}
-
-	.project-video-dialog::backdrop {
-		background: rgba(15, 14, 13, 0.86);
-		backdrop-filter: blur(8px);
-	}
-
-	.project-video-dialog video {
-		display: block;
-		width: 100%;
-		max-height: 88vh;
-		border-radius: 20px;
-		object-fit: contain;
-	}
-
-	.project-video-close {
-		position: absolute;
-		top: -18px;
-		right: -18px;
-		z-index: 1;
-		display: grid;
-		place-items: center;
-		width: 42px;
-		height: 42px;
-		padding: 0;
-		border: 2px solid rgba(255, 255, 255, 0.7);
-		border-radius: 50%;
-		background: #1f302b;
-		font-size: 1.7rem;
-		line-height: 1;
-		color: #fff;
-		cursor: pointer;
-	}
-
-	.project-visual span {
-		font-family: var(--font-display);
-		font-size: 2.5rem;
-		font-weight: 600;
-		line-height: 1;
-	}
-
-	.project-content {
-		display: grid;
-		align-content: start;
-		gap: 12px;
-		min-width: 0;
-	}
-
-	.project-result {
-		padding-left: 12px;
-		border-left: 2px solid rgba(104, 79, 41, 0.35);
-		font-size: 0.9rem;
-		line-height: 1.6;
-	}
-
-	.project-highlight {
-		width: fit-content;
-		padding: 7px 12px;
-		border-radius: 999px;
-		background: rgba(31, 48, 43, 0.1);
-		font-size: 0.84rem;
-		font-weight: 800;
-		line-height: 1.3;
-		color: #1f302b;
-	}
-
-	.project-meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.project-card h4 {
-		font-size: 1.25rem;
-		margin: 0;
-	}
-
-	.project-card h4 a {
-		color: inherit;
-		text-decoration: none;
-		border-bottom: 1px solid transparent;
-		transition: color 0.2s ease, border-color 0.2s ease;
-	}
-
-	.project-card h4 a:hover {
-		color: var(--accent-deep);
-		border-bottom-color: rgba(123, 99, 57, 0.32);
-	}
-
-	.project-category {
-		font-size: 0.95rem;
-		font-weight: 700;
-		color: var(--accent-deep);
-		margin: 0;
-	}
-
-	.project-status {
-		padding: 6px 10px;
-		border-radius: 999px;
-		background: rgba(162, 135, 87, 0.1);
-		font-size: 0.78rem;
-		font-weight: 800;
-		line-height: 1.2;
-		color: var(--text);
-	}
-
-	.project-tools {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		color: var(--text);
-	}
-
-	.project-tools span {
-		padding: 6px 10px;
-		border-radius: 999px;
-		background: rgba(255, 250, 243, 0.9);
-		border: 1px solid rgba(162, 135, 87, 0.12);
-		font-size: 0.82rem;
-		font-weight: 700;
-		line-height: 1.2;
-	}
-
-	.project-link {
-		width: fit-content;
-		margin-top: 2px;
-		font-size: 0.92rem;
-		font-weight: 800;
-		color: var(--accent-deep);
-		text-decoration: none;
-		border-bottom: 1px solid rgba(123, 99, 57, 0.32);
-		padding-bottom: 3px;
-	}
-
-	.project-link:hover {
-		color: var(--text);
-		border-bottom-color: rgba(20, 19, 22, 0.34);
-	}
-
-	.project-video-link {
-		padding: 0 0 3px;
-		border: 0;
-		border-bottom: 1px solid rgba(123, 99, 57, 0.32);
-		background: transparent;
-		font-family: inherit;
-		cursor: pointer;
-	}
-
-	@media (max-width: 980px) {
-		.projects-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-
-	@media (max-width: 640px) {
-		.project-card {
-			grid-template-columns: 1fr;
-		}
-
-		.project-visual {
-			min-height: 132px;
-			aspect-ratio: 16 / 9;
-		}
-
-		.project-video-dialog {
-			width: calc(100vw - 24px);
-			overflow: hidden;
-		}
-
-		.project-video-close {
-			top: 10px;
-			right: 10px;
-			width: 44px;
-			height: 44px;
-		}
-	}
-
-	.capabilities-band,
-	.contact-band {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-		gap: 36px;
-		padding: 34px;
-		align-items: start;
-		border-radius: 32px;
-		background: linear-gradient(180deg, var(--surface-warm), rgba(255, 255, 255, 0.58));
-		box-shadow: var(--shadow-soft);
-	}
-
-	.capabilities-band {
-		grid-template-columns: minmax(0, 1fr);
-		gap: 28px;
-	}
-
-	.capabilities-intro {
-		max-width: none;
-	}
-
-	.capabilities-intro h2 {
-		margin-bottom: 14px;
-	}
-
-	.capabilities-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 22px;
-	}
-
-	.capability-card {
-		display: flex;
-		flex-direction: column;
-		padding: 24px;
-		border-radius: 24px;
-		background: rgba(255, 255, 255, 0.62);
-		border: 1px solid rgba(162, 135, 87, 0.12);
-		box-shadow: 0 10px 24px rgba(28, 21, 12, 0.04);
-	}
-
-	.capability-card h3 {
-		font-size: 1.34rem;
-		margin-bottom: 18px;
-	}
-
-	.capability-card p {
-		margin-bottom: 14px;
-		line-height: 1.7;
-	}
-
-	.capability-list {
-		display: flex;
-		flex-wrap: wrap;
-		align-content: flex-start;
-		gap: 9px;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.capability-list li {
-		padding: 7px 11px;
-		border: 1px solid rgba(123, 99, 57, 0.18);
-		border-radius: 999px;
-		background: linear-gradient(135deg, rgba(162, 135, 87, 0.12), rgba(235, 224, 200, 0.38));
-		font-size: 0.86rem;
-		font-weight: 700;
-		line-height: 1.25;
-		color: var(--text);
-	}
-
-	.contact-band {
-		grid-template-columns: minmax(0, 1fr);
-		max-width: 720px;
-	}
-
-	.contact-copy {
-		display: grid;
-		gap: 18px;
-	}
-
-	.contact-card {
-		display: grid;
-		gap: 12px;
-		padding: 28px;
-		background:
-			linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(162, 135, 87, 0.08)),
-			rgba(255, 252, 247, 0.72);
-		border: 1px solid var(--line);
-		border-radius: var(--radius-md);
-		overflow: hidden;
-	}
-
-	.contact-name {
-		font-family: var(--font-display);
-		font-size: 2.25rem;
-		line-height: 0.96;
-		letter-spacing: -0.03em;
-		color: var(--text);
-	}
-
-	.contact-role {
-		font-size: 0.92rem;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--muted);
-	}
-
-	.contact-email-context {
-		max-width: 56ch;
-		margin-top: 8px;
-		font-size: 0.95rem;
-		line-height: 1.65;
-	}
-
-	.contact-email {
-		width: fit-content;
-		font-size: 1rem;
-		font-weight: 700;
-		color: var(--text);
-		text-decoration: none;
-		border-bottom: 1px solid rgba(20, 19, 22, 0.2);
-		padding-bottom: 3px;
-	}
-
-	.contact-email:hover {
-		color: var(--accent-deep);
-		border-bottom-color: rgba(123, 99, 57, 0.4);
-	}
-
-	.contact-cv {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: fit-content;
-		padding: 11px 17px;
-		border-radius: 999px;
-		background: #1f302b;
-		font-size: 0.9rem;
-		font-weight: 800;
-		color: #fff;
-		text-decoration: none;
-		transition: transform 0.2s ease, background-color 0.2s ease;
-	}
-
-	.contact-cv:hover {
-		transform: translateY(-1px);
-		background: #354d45;
-	}
-
-	.linkedin-card {
-		display: grid;
-		grid-template-columns: 48px minmax(0, 1fr);
-		align-items: center;
-		gap: 14px;
-		margin-top: 10px;
-		padding: 14px 16px;
-		width: min(100%, 340px);
-		border-radius: 18px;
-		border: 1px solid var(--line);
-		background: rgba(255, 255, 255, 0.58);
-		color: var(--text);
-		text-decoration: none;
-		transition:
-			transform 0.28s ease,
-			background-color 0.28s ease,
-			border-color 0.28s ease,
-			box-shadow 0.28s ease;
-	}
-
-	.linkedin-mark {
-		display: grid;
-		place-items: center;
-		width: 48px;
-		height: 48px;
-		border-radius: 14px;
-		background: #0a66c2;
-		color: #ffffff;
-		box-shadow: 0 10px 18px rgba(10, 102, 194, 0.14);
-	}
-
-	.linkedin-mark svg {
-		width: 21px;
-		height: 21px;
-		fill: currentColor;
-	}
-
-	.linkedin-copy {
-		display: grid;
-		gap: 2px;
-	}
-
-	.linkedin-label {
-		font-size: 0.74rem;
-		font-weight: 800;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--accent-deep);
-	}
-
-	.linkedin-name {
-		font-size: 1rem;
-		font-weight: 700;
-		line-height: 1.3;
-		color: var(--text);
-	}
-
-	.linkedin-card:hover {
-		transform: translateY(-2px);
-		background: rgba(255, 255, 255, 0.78);
-		box-shadow: 0 14px 32px rgba(28, 21, 12, 0.08);
-	}
-
-	.capabilities-band h2 {
-		max-width: none;
-	}
-
-	.contact-band h2 {
-		max-width: 14ch;
-	}
-
-	.hero,
-	.capabilities-band,
-	.contact-band {
-		animation: rise 0.8s ease both;
-	}
-
-	@keyframes rise {
-		from {
-			opacity: 0;
-			transform: translateY(24px);
-		}
-
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@media (max-width: 980px) {
-		.capabilities-band,
-		.capabilities-grid,
-		.contact-band {
-			grid-template-columns: 1fr;
-		}
-	}
-
-	@media (max-width: 720px) {
-		.page-shell {
-			width: min(100% - 20px, 1180px);
-			padding-top: 12px;
-		}
-
-		.topbar {
-			flex-direction: column;
-			align-items: flex-start;
-			padding: 18px;
-			border-radius: 22px;
-		}
-
-		.hero,
-		.capabilities-band,
-		.contact-band {
-			padding-left: 22px;
-			padding-right: 22px;
-		}
-
-		h1 {
-			max-width: 100%;
-			font-size: clamp(2.8rem, 11vw, 3.8rem);
-			line-height: 1.04;
-		}
-
-		h2 {
-			font-size: clamp(2rem, 10vw, 2.9rem);
-		}
-
-		.step-panel,
-		.closing-banner {
-			padding: 24px;
-		}
-	}
-</style>

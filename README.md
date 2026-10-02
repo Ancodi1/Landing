@@ -69,6 +69,8 @@ La aplicación estará disponible, por defecto, en `http://localhost:4321/`.
 │   ├── assets/             # Recursos procesados por Astro
 │   ├── components/         # Componentes de la interfaz
 │   ├── imx/                # Imágenes importadas por los componentes
+│   ├── data/               # Contenido público de proyectos
+│   ├── styles/             # Sistema visual compartido del portfolio
 │   ├── layouts/            # Layout principal y metadatos SEO
 │   └── pages/              # Páginas y endpoints del sitio
 ├── astro.config.mjs        # Configuración de Astro y URL pública
@@ -105,3 +107,27 @@ El contenido resultante de `dist/` puede desplegarse en cualquier servicio compa
 
 - [GitHub](https://github.com/Ancodi1)
 - [LinkedIn](https://www.linkedin.com/in/%C3%A1ngel-collazo-d%C3%ADaz-4896742a9/)
+
+## Proyecto PrestaShop
+
+La ficha está en `/proyectos/prestashop-security-module/` y reutiliza el layout, las tarjetas, los botones y las tecnologías del portfolio. Los CTAs llevan a la sección de contacto existente. El estado público es `Final testing / Pre-release`.
+
+El contenido público se centraliza en `src/data/prestashop-security-module.ts`. Las seis categorías de características se han contrastado con el módulo local. Mantén las descripciones generales; el código del producto, su repositorio privado, sus archivos internos y su ZIP no forman parte de este sitio.
+
+### Añadir capturas reales
+
+Guarda imágenes revisadas en `public/imx/prestashop-security-module/` y añade cada entrada al array `screenshots`:
+
+```ts
+{
+  src: 'imx/prestashop-security-module/back-office.webp',
+  alt: 'Panel de configuración del módulo en Back Office',
+  caption: 'Configuración del módulo desde PrestaShop.',
+  width: 1440,
+  height: 900
+}
+```
+
+La ruta y las dimensiones del ejemplo deben corresponder al archivo real. `ProjectScreenshots` muestra automáticamente la galería responsive con ampliación, textos alternativos y carga diferida. Hasta entonces muestra un aviso discreto, sin imágenes inventadas.
+
+Antes de añadir una captura, elimina datos personales, credenciales, dominios o rutas privadas y cualquier detalle interno de seguridad. Solo deben verse pantallas públicas de la interfaz con datos de demostración. No copies archivos del módulo a `public/`.
