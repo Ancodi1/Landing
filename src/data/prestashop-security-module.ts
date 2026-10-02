@@ -4,6 +4,7 @@ export interface ProjectScreenshot {
 	caption: string;
 	width: number;
 	height: number;
+	mobile?: { src: string; width: number; height: number };
 }
 
 // General feature categories verified against the local module; keep implementation private.
@@ -27,7 +28,12 @@ export const securityModule = {
 			alt: 'Recorrido del acceso biométrico en PrestaShop: configuración en Back Office, activación desde la cuenta de cliente y gestión de dispositivos en móvil',
 			caption: 'Configuración y recorrido de uso del acceso biométrico en escritorio y móvil.',
 			width: 1536,
-			height: 1024
+			height: 1024,
+			mobile: {
+				src: 'imx/prestashop-security-module/Secure Biometric Login Guide.png',
+				width: 724,
+				height: 2171
+			}
 		}
 	] satisfies ProjectScreenshot[]
 };

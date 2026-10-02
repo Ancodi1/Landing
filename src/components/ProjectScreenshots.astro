@@ -6,37 +6,111 @@ const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
 ---
 {screenshots.length ? (
 	<div class:list={['screenshot-grid', { 'screenshot-grid-single': screenshots.length === 1 }]}>
-		{screenshots.map((shot) => (
-			<figure class="capability-card">
-				<a class="screenshot-preview" href={`${basePath}${shot.src.replace(/^\/+/, '')}`} target="_blank" rel="noreferrer" aria-label={`Ampliar: ${shot.alt}`}>
-					<img src={`${basePath}${shot.src.replace(/^\/+/, '')}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
-				</a>
+		{screenshots.map((shot, index) => (
+			<figure class:list={['capability-card', { 'has-mobile-screenshot': Boolean(shot.mobile) }]} style={shot.mobile ? `--mobile-image-width: ${shot.mobile.width}px` : undefined}>
+				<div class="screenshot-viewer" data-screenshot-viewer>
+					<div class="screenshot-preview" data-screenshot-scroll tabindex="0" role="region" aria-label="Imagen de demostración, desplazable horizontalmente">
+						<picture>
+							{shot.mobile && <source media="(max-width: 720px)" srcset={encodeURI(`${basePath}${shot.mobile.src.replace(/^\/+/, '')}`)} width={shot.mobile.width} height={shot.mobile.height} />}
+							<img src={`${basePath}${shot.src.replace(/^\/+/, '')}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
+						</picture>
+					</div>
+					<label class="screenshot-scroll-control" hidden>
+						<span>← Mueve la barra para recorrer la imagen →</span>
+						<input type="range" min="0" max="1000" value="0" aria-label="Desplazar horizontalmente la imagen de demostración" data-screenshot-range />
+					</label>
+				</div>
 				<figcaption>
 					{shot.caption}
-					<span class="screenshot-mobile-hint">Desliza horizontalmente para recorrer la imagen.</span>
-					<a class="project-link" href={`${basePath}${shot.src.replace(/^\/+/, '')}`} target="_blank" rel="noreferrer">Ver imagen a tamaño completo</a>
+					<button class="project-link screenshot-open" type="button" data-screenshot-open={`screenshot-dialog-${index}`} aria-haspopup="dialog">Ampliar imagen</button>
 				</figcaption>
+				<dialog class="screenshot-dialog" id={`screenshot-dialog-${index}`} aria-labelledby={`screenshot-title-${index}`}>
+					<div class="screenshot-dialog-heading">
+						<p id={`screenshot-title-${index}`}>Demostración del módulo</p>
+						<button class="screenshot-close" type="button" aria-label="Cerrar imagen ampliada" autofocus>Cerrar ×</button>
+					</div>
+					<div class="screenshot-viewer" data-screenshot-viewer>
+						<div class="screenshot-preview screenshot-expanded" data-screenshot-scroll tabindex="0" role="region" aria-label="Imagen ampliada, desplazable horizontalmente">
+							<picture>
+								{shot.mobile && <source media="(max-width: 720px)" srcset={encodeURI(`${basePath}${shot.mobile.src.replace(/^\/+/, '')}`)} width={shot.mobile.width} height={shot.mobile.height} />}
+								<img src={`${basePath}${shot.src.replace(/^\/+/, '')}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
+							</picture>
+						</div>
+						<label class="screenshot-scroll-control" hidden>
+							<span>← Mueve la barra para recorrer la imagen →</span>
+							<input type="range" min="0" max="1000" value="0" aria-label="Desplazar horizontalmente la imagen ampliada" data-screenshot-range />
+						</label>
+					</div>
+				</dialog>
 			</figure>
 		))}
 	</div>
 ) : (
-	<div class="capability-card">
-		<p>Las capturas de la interfaz estarán disponibles próximamente, tras las pruebas finales del módulo.</p>
-	</div>
+	<div class="capability-card"><p>Las capturas de la interfaz estarán disponibles próximamente, tras las pruebas finales del módulo.</p></div>
 )}
+<script>
+	document.querySelectorAll<HTMLElement>('[data-screenshot-viewer]').forEach((viewer) => {
+		const area = viewer.querySelector<HTMLElement>('[data-screenshot-scroll]');
+		const range = viewer.querySelector<HTMLInputElement>('[data-screenshot-range]');
+		const control = viewer.querySelector<HTMLElement>('.screenshot-scroll-control');
+		if (!area || !range || !control) return;
+		const sync = () => {
+			const extent = area.scrollWidth - area.clientWidth;
+			control.hidden = extent <= 1;
+			range.value = String(extent > 0 ? Math.round(area.scrollLeft / extent * 1000) : 0);
+		};
+		range.addEventListener('input', () => { area.scrollLeft = Number(range.value) / 1000 * (area.scrollWidth - area.clientWidth); });
+		area.addEventListener('scroll', sync, { passive: true });
+		area.querySelector('img')?.addEventListener('load', sync);
+		new ResizeObserver(sync).observe(area);
+		sync();
+	});
+	document.querySelectorAll<HTMLButtonElement>('[data-screenshot-open]').forEach((trigger) => {
+		const dialog = document.getElementById(trigger.dataset.screenshotOpen ?? '');
+		if (!(dialog instanceof HTMLDialogElement)) return;
+		let previousOverflow = '';
+		trigger.addEventListener('click', () => {
+			previousOverflow = document.body.style.overflow;
+			dialog.showModal();
+			document.body.style.overflow = 'hidden';
+		});
+		dialog.querySelector('.screenshot-close')?.addEventListener('click', () => dialog.close());
+		dialog.addEventListener('click', (event) => {
+			const bounds = dialog.getBoundingClientRect();
+			if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
+		});
+		dialog.addEventListener('close', () => {
+			document.body.style.overflow = previousOverflow;
+			trigger.focus({ preventScroll: true });
+		});
+	});
+</script>
 <style>
 	.screenshot-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
 	.screenshot-grid-single { grid-template-columns: minmax(0, 1fr); }
 	.screenshot-grid-single figure { padding: 12px; }
-	figure { margin: 0; min-width: 0; }
-	.screenshot-preview { display: block; max-width: 100%; overflow-x: auto; border-radius: 16px; }
+	figure, .screenshot-viewer { margin: 0; min-width: 0; }
+	.screenshot-preview { display: block; width: 100%; max-width: 100%; overflow-x: auto; border-radius: 16px; scrollbar-width: auto; scrollbar-color: var(--teal) var(--accent-soft); }
+	.screenshot-preview::-webkit-scrollbar { height: 12px; }
+	.screenshot-preview::-webkit-scrollbar-track { background: var(--accent-soft); border-radius: 10px; }
+	.screenshot-preview::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 10px; border: 2px solid var(--accent-soft); }
+	picture { display: block; }
 	img { display: block; width: 100%; height: auto; border-radius: 16px; }
 	figcaption { margin-top: 14px; color: var(--muted); line-height: 1.7; }
-	figcaption .project-link { display: block; margin-top: 8px; }
-	.screenshot-mobile-hint { display: none; }
+	.screenshot-open { display: block; margin-top: 8px; padding: 0 0 3px; background: none; border: 0; font: inherit; cursor: pointer; }
+	.screenshot-scroll-control { display: grid; gap: 8px; padding: 12px 4px 4px; font-size: 0.85rem; color: var(--muted); }
+	.screenshot-scroll-control[hidden] { display: none; }
+	input[type='range'] { display: block; width: 100%; margin: 0; height: 30px; accent-color: var(--teal); cursor: ew-resize; }
+	.screenshot-dialog { box-sizing: border-box; width: min(96vw, 1600px); max-width: 96vw; max-height: 92dvh; padding: 18px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface-strong); color: var(--text); overflow-y: auto; box-shadow: var(--shadow); }
+	.screenshot-dialog::backdrop { background: rgba(15, 14, 13, 0.8); backdrop-filter: blur(8px); }
+	.screenshot-dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; }
+	.screenshot-dialog-heading p { font-weight: 800; }
+	.screenshot-close { flex-shrink: 0; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--teal); color: white; font: inherit; cursor: pointer; }
 	@media (max-width: 720px) {
 		.screenshot-grid { grid-template-columns: minmax(0, 1fr); }
-		.screenshot-grid-single img { min-width: 1100px; }
-		.screenshot-grid-single .screenshot-mobile-hint { display: block; margin-top: 8px; }
+		.screenshot-grid-single img, .screenshot-expanded img { min-width: 1100px; }
+		.has-mobile-screenshot img { min-width: 0; }
+		.has-mobile-screenshot .screenshot-expanded img { min-width: var(--mobile-image-width); }
+		.screenshot-dialog { padding: 12px; }
 	}
 </style>
