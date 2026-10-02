@@ -225,7 +225,15 @@ const featuredProjects = [
 								</dialog>
 							</>
 						) : project.detailUrl ? (
-							<a class="project-visual project-visual-link" href={project.detailUrl} aria-label={`Ver ficha de ${project.title}`}><span>{String(index + 1).padStart(2, '0')}</span></a>
+							<a class="project-visual project-visual-link project-security-visual" href={project.detailUrl} aria-label={`Ver ficha de ${project.title}`}>
+								<svg class="project-security-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+									<path d="M40 8 65 18v20c0 17-11 28-25 34C26 66 15 55 15 38V18L40 8Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+									<rect x="29" y="34" width="22" height="19" rx="4" fill="currentColor" />
+									<path d="M33 34v-6a7 7 0 0 1 14 0v6" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+									<path d="M40 42v4" stroke="var(--surface-strong)" stroke-width="3" stroke-linecap="round" />
+								</svg>
+								<span class="project-security-label">PrestaShop</span>
+							</a>
 						) : project.url ? (
 							<a
 								class="project-visual project-visual-link"

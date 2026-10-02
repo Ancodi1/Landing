@@ -303,6 +303,22 @@
 		font-weight: 600;
 		line-height: 1;
 	}
+:where(.portfolio) .project-security-visual {
+		align-content: center;
+		gap: 10px;
+		color: var(--teal);
+		padding: 16px;
+	}
+:where(.portfolio) .project-security-icon {
+		width: 76px;
+		height: 76px;
+	}
+:where(.portfolio) .project-visual .project-security-label {
+		font-family: var(--font-sans);
+		font-size: 0.85rem;
+		font-weight: 800;
+		line-height: 1.25;
+	}
 :where(.portfolio) .project-content {
 		display: grid;
 		align-content: start;
