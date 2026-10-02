@@ -110,7 +110,7 @@ El contenido resultante de `dist/` puede desplegarse en cualquier servicio compa
 
 ## Proyecto PrestaShop
 
-La ficha está en `/proyectos/prestashop-security-module/` y reutiliza el layout, las tarjetas, los botones y las tecnologías del portfolio. Los CTAs llevan a la sección de contacto existente. El estado público es `Final testing / Pre-release`.
+La ficha está en `/proyectos/prestashop-security-module/` y reutiliza el layout, las tarjetas, los botones y las tecnologías del portfolio. Los CTAs llevan a la sección de contacto existente. La ficha explica en español que el módulo está en pruebas finales previas al lanzamiento.
 
 El contenido público se centraliza en `src/data/prestashop-security-module.ts`. Las seis categorías de características se han contrastado con el módulo local. Mantén las descripciones generales; el código del producto, su repositorio privado, sus archivos internos y su ZIP no forman parte de este sitio.
 
