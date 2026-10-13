@@ -174,13 +174,8 @@ footer(c, 2); c.showPage()
 
 # 3 · Proyectos destacados
 header(c, "Selección de proyectos")
-kicker(c, "Proyecto destacado", M, H - 25 * mm)
-y = p(c, "Audiovisual para Venditalia 2026", M, H - 31 * mm, 110 * mm, "h2")
-image(c, "public/imx/Venditalia-2026_800x800.jpg", W - M - 56 * mm, H - 91 * mm, 56 * mm, 56 * mm)
-y = p(c, "Idea, diseño y montaje de todo el contenido audiovisual para un evento internacional B2B.", M, y - 5 * mm, 108 * mm, "lead") - 3 * mm
-p(c, "El audiovisual se diseñó como una pieza central del stand para captar la atención en un entorno de gran afluencia. Se proyectó en bucle durante varias horas en pantallas de gran formato, consiguiendo visibilidad ante miles de asistentes.", M, y, 108 * mm, "body")
-tags(c, ["Premiere", "After Effects", "Edición de vídeo", "Diseño audiovisual"], M, 174 * mm, 108 * mm)
-project(c, 146 * mm, "Alma Matter", "Proyecto personal · Aplicación full stack", "Aplicación académica para gestionar alumnos, asignaturas y exámenes en entidades que imparten cursos o clases online.", "Aplicación funcional y responsive con CRUD, búsqueda, paginación, validaciones y seguridad web.", ["PHP", "MySQL", "JavaScript", "MVC"], "public/imx/logo.png", "github.com/Ancodi1/Academia-Alma-Matter-Ancodi", True, 75 * mm)
+p(c, "Desarrollo de aplicaciones", M, H - 25 * mm, W - 2 * M, "h2")
+project(c, 237 * mm, "Alma Matter", "Proyecto personal · Aplicación full stack", "Aplicación académica para gestionar alumnos, asignaturas y exámenes en entidades que imparten cursos o clases online.", "Aplicación funcional y responsive con CRUD, búsqueda, paginación, validaciones y seguridad web.", ["PHP", "MySQL", "JavaScript", "MVC"], "public/imx/logo.png", "github.com/Ancodi1/Academia-Alma-Matter-Ancodi", True, 75 * mm)
 footer(c, 3, "Ángel Collazo Díaz · Proyectos"); c.showPage()
 
 # 4 · Proyectos web
@@ -203,17 +198,7 @@ image(c, "public/imx/banner-novedades-movil.png", M, 78 * mm, W - 2 * M, 28 * mm
 image(c, "public/imx/bannermovil445x154.png", M, 42 * mm, W - 2 * M, 25 * mm)
 footer(c, 5, "Ángel Collazo Díaz · Diseño"); c.showPage()
 
-# 6 · Flyers
-header(c, "Diseño y comunicación visual")
-kicker(c, "Flyers Venditalia 2026", M, H - 25 * mm)
-y = p(c, "Diseño para feria internacional", M, H - 31 * mm, W - 2 * M, "h2") - 2 * mm
-p(c, "Piezas utilizadas en Venditalia 2026, donde representé a la marca y participé activamente en la captación de nuevos clientes y en reuniones con potenciales socios comerciales.", M, y, W - 2 * M, "body")
-fw = (W - 2 * M - 8 * mm) / 2
-image(c, "public/imx/flyer-a.png", M, 27 * mm, fw, 205 * mm)
-image(c, "public/imx/flyer-b.png", M + fw + 8 * mm, 27 * mm, fw, 205 * mm)
-footer(c, 6, "Ángel Collazo Díaz · Diseño"); c.showPage()
-
-# 7 · Contacto
+# 6 · Contacto
 header(c, "Contacto")
 card(c, M, 74 * mm, W - 2 * M, 166 * mm)
 kicker(c, "Disponible para proyectos freelance", M + 10 * mm, 220 * mm)
@@ -221,6 +206,6 @@ y = p(c, "Ángel Collazo Díaz", M + 10 * mm, 208 * mm, W - 2 * M - 20 * mm, "h2
 y = p(c, "Disponible como desarrollador web y profesional de marketing digital freelance para proyectos en Galicia y toda España.", M + 10 * mm, y, W - 2 * M - 20 * mm, "lead") - 8 * mm
 p(c, "<b>Correo</b><br/>angelcollazodiaz@gmail.com<br/><br/><b>Portfolio</b><br/>www.angelcollazo.com<br/><br/><b>GitHub</b><br/>github.com/Ancodi1<br/><br/><b>LinkedIn</b><br/>linkedin.com/in/ángel-collazo-díaz-4896742a9", M + 10 * mm, y, W - 2 * M - 20 * mm, "body")
 p(c, "Este dossier contiene una selección autosuficiente del portfolio. Los enlaces se incluyen únicamente como referencia adicional.", M, 55 * mm, W - 2 * M, "small")
-footer(c, 7); c.save()
+footer(c, 6); c.save()
 
 print(OUT)

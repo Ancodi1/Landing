@@ -12,7 +12,7 @@ El sitio está desarrollado con Astro y prioriza el rendimiento, la adaptación 
 
 - Presentación profesional de servicios, conocimientos y habilidades.
 - Portfolio de proyectos de desarrollo web, diseño y marketing digital.
-- Galería de banners, flyers y piezas audiovisuales.
+- Galería de banners estáticos y animados.
 - Carruseles de vídeo e imágenes con controles accesibles.
 - Diseño responsive para móvil, tablet y escritorio.
 - Descarga directa del currículum en PDF.

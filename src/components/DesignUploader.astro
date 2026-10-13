@@ -2,25 +2,6 @@
 const basePath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
 const assetPath = (path: string) => `${basePath}${path.replace(/^\/+/, '')}`;
 
-const flyerAssets = [
-	{
-		src: assetPath('imx/flyer-a-thumb.webp'),
-		href: assetPath('imx/flyer-a.png'),
-		title: 'Flyer Venditalia 2026',
-		description: 'Flyer vertical completo para Venditalia 2026.',
-		width: 720,
-		height: 1512
-	},
-	{
-		src: assetPath('imx/flyer-b-thumb.webp'),
-		href: assetPath('imx/flyer-b.png'),
-		title: 'Flyer Venditalia 2026',
-		description: 'Segunda versión del flyer vertical para Venditalia 2026.',
-		width: 720,
-		height: 1512
-	}
-];
-
 const desktopBannerAsset = {
 	src: assetPath('imx/MUESTRABANNERS.webp'),
 	title: 'Muestra de banners promocionales',
@@ -166,32 +147,6 @@ const videoAssets = [
 		</details>
 	</section>
 
-	<section class="asset-group">
-		<div class="video-copy">
-			<h4>Flyer Venditalia 2026</h4>
-			<p>
-				Estos flyers se utilizaron en Venditalia 2026, una feria internacional en la que
-				representé a la marca y participé activamente en la captación de nuevos clientes y en
-				reuniones con potenciales socios comerciales.
-			</p>
-		</div>
-		<div class="flyer-grid">
-			{flyerAssets.map((asset) => (
-				<figure class="asset-card flyer-card">
-					<a href={asset.href} target="_blank" rel="noreferrer">
-						<img
-							src={asset.src}
-							alt={asset.title}
-							width={asset.width}
-							height={asset.height}
-							loading="lazy"
-							decoding="async"
-						/>
-					</a>
-				</figure>
-			))}
-		</div>
-	</section>
 </section>
 
 <script>
@@ -299,45 +254,6 @@ const videoAssets = [
 	.asset-group {
 		margin-bottom: 32px;
 		padding-top: 8px;
-	}
-
-	.asset-card {
-		background: transparent;
-		box-shadow: none;
-		border-radius: 0;
-		backdrop-filter: none;
-		overflow: hidden;
-		position: relative;
-	}
-
-	.asset-card a {
-		display: flex;
-		justify-content: center;
-		padding: 24px;
-		text-decoration: none;
-	}
-
-	.asset-card img {
-		display: block;
-		width: auto;
-		height: auto;
-		max-width: 100%;
-		image-rendering: auto;
-	}
-
-	.flyer-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 24px;
-	}
-
-	.flyer-card a {
-		align-items: flex-start;
-		background: rgba(255, 252, 247, 0.2);
-	}
-
-	.flyer-card img {
-		width: min(100%, 360px);
 	}
 
 	.desktop-banner-showcase {
@@ -538,22 +454,11 @@ const videoAssets = [
 		margin-left: 4px;
 	}
 
-	@media (max-width: 980px) {
-		.flyer-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-
 	@media (max-width: 720px) {
-		.asset-card a,
 		figcaption,
 		.video-copy {
 			padding-left: 16px;
 			padding-right: 16px;
-		}
-
-		.asset-card a {
-			padding-top: 16px;
 		}
 
 		.desktop-banner-showcase {
@@ -645,23 +550,9 @@ const videoAssets = [
 			display: none !important;
 		}
 
-		.desktop-banner-showcase,
-		.flyer-card {
+		.desktop-banner-showcase {
 			break-inside: avoid-page;
 		}
 
-		.flyer-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 5mm;
-		}
-
-		.flyer-card a {
-			padding: 3mm;
-		}
-
-		.flyer-card img {
-			max-height: 112mm;
-			width: auto;
-		}
 	}
 </style>
