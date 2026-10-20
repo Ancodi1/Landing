@@ -13,11 +13,11 @@ const moduleUrl = `${basePath}proyectos/prestashop-security-module/`;
 const capabilityGroups = [
 	{
 		title: 'Desarrollo y tecnologías',
-		items: ['PHP', 'Java', 'JavaScript', 'C#', 'HTML5', 'CSS3', 'Node.js', 'Spring Boot']
+		items: ['PHP', 'Java', 'JavaScript', 'C#', 'HTML5', 'CSS3', 'Node.js', 'Spring Boot', 'ASP.NET Core', 'API REST', 'Entity Framework Core']
 	},
 	{
 		title: 'Bases de datos y herramientas',
-		items: ['MySQL', 'MariaDB', 'SQL', 'Git', 'Docker', 'XAMPP', 'PrestaShop']
+		items: ['MySQL', 'MariaDB', 'SQL', 'Git', 'Docker', 'XAMPP', 'PrestaShop', 'PostgreSQL', 'xUnit']
 	},
 	{
 		title: 'Marketing digital',
@@ -54,6 +54,18 @@ const featuredProjects = [
 		summary: securityModule.introduction,
 		tools: securityModule.technologies,
 		detailUrl: moduleUrl
+	},
+	{
+		title: 'HelpDesk.NET',
+		type: 'Backend · API de gestión de incidencias',
+		status: 'Proyecto personal · En desarrollo',
+		highlight: 'Desarrollo backend con C# y ASP.NET Core',
+		summary:
+			'API REST para gestionar tickets de soporte técnico. Un proyecto personal en evolución con el que estoy ampliando mis conocimientos de desarrollo backend en el ecosistema .NET.',
+		result: 'CRUD de tickets con validaciones y clasificación por estado, prioridad y categoría.',
+		tools: ['C#', 'ASP.NET Core', 'API REST', 'Entity Framework Core', 'PostgreSQL'],
+		url: 'https://github.com/Ancodi1/HelpDesk.NET',
+		visual: 'ticket'
 	},
 	{
 		title: 'Alma Matter',
@@ -200,13 +212,22 @@ const featuredProjects = [
 							</a>
 						) : project.url ? (
 							<a
-								class="project-visual project-visual-link"
+								class:list={['project-visual', 'project-visual-link', { 'project-security-visual': project.visual === 'ticket' }]}
 								href={project.url}
 								target="_blank"
 								rel="noreferrer"
 								aria-label={`Ver proyecto ${project.title}`}
 							>
-								{project.image ? (
+								{project.visual === 'ticket' ? (
+									<>
+										<svg class="project-security-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+											<path d="M12 20h56v12a8 8 0 0 0 0 16v12H12V48a8 8 0 0 0 0-16V20Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+											<path d="M51 22v36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 6" />
+											<path d="M25 34h14M25 44h10" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+										</svg>
+										<span class="project-security-label">HelpDesk.NET</span>
+									</>
+								) : project.image ? (
 									<img
 										src={project.image?.startsWith('/imx/') ? `${basePath}${project.image.slice(1)}` : project.image}
 										alt={project.title}
