@@ -1,4 +1,6 @@
 ---
+import Analytics from '@vercel/analytics/astro';
+
 interface Props {
 	title?: string;
 	description?: string;
@@ -71,6 +73,7 @@ const structuredData = {
 <!doctype html>
 <html lang="es">
 	<head>
+		<Analytics />
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="author" content={author} />
